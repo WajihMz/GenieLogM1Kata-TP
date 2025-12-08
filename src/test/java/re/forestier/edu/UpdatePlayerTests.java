@@ -72,4 +72,17 @@ public class UpdatePlayerTests {
         }
     }
 
+    @Test
+    @DisplayName("majFinDeTour pour ADVENTURER niveau < 3 doit réduire les HP")
+    void majFinDeTour_adventurerNiveauBas_reduitHP() {
+        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 10;
+        
+        UpdatePlayer.addXp(p, 5);
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(11));
+    }
+
 }
