@@ -6,6 +6,7 @@ import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.player;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -70,6 +71,42 @@ public class UnitTests {
         player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
         UpdatePlayer.addXp(p, 111);
         assertThat(p.retrieveLevel(), is(5));
+    }
+
+    @Test
+    @DisplayName("retrieveLevel - XP exactement au minimum pour niveau 3")
+    void retrieveLevel_xpExactMinimumNiveau3_retourne3() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        
+        UpdatePlayer.addXp(p, 28);
+        assertEquals(3, p.retrieveLevel());
+    }
+
+    @Test
+    @DisplayName("retrieveLevel - XP maximum pour niveau 3")
+    void retrieveLevel_xpMaximumNiveau3_retourne3() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        
+        UpdatePlayer.addXp(p, 56);
+        assertEquals(3, p.retrieveLevel());
+    }
+
+    @Test
+    @DisplayName("retrieveLevel - XP juste en dessous du seuil niveau 4")
+    void retrieveLevel_xpJusteEnDessousNiveau4_retourne3() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        
+        UpdatePlayer.addXp(p, 56);
+        assertEquals(3, p.retrieveLevel());
+    }
+
+    @Test
+    @DisplayName("retrieveLevel - XP exactement au seuil niveau 4")
+    void retrieveLevel_xpExactSeuilNiveau4_retourne4() {
+        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        
+        UpdatePlayer.addXp(p, 57);
+        assertEquals(4, p.retrieveLevel());
     }
 
     @Test
