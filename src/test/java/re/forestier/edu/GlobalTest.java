@@ -42,4 +42,22 @@ public class GlobalTest {
         assertThat(result, containsString("ATK"));
         assertThat(result, containsString("INT"));
     }
+
+    @Test
+    @DisplayName("Test affichage joueur ARCHER niveau 3")
+    void testAffichageArcherLevelThree() {
+        player player = new player("Test", "Archer", "ARCHER", 100, new ArrayList<>());
+        UpdatePlayer.addXp(player, 27);
+        player.inventory = new ArrayList<>();
+        String result = Affichage.afficherJoueur(player);
+        
+        assertThat(result, containsString("Archer"));
+        assertThat(result, containsString("Test"));
+        assertThat(result, containsString("Niveau : 3"));
+        assertThat(result, containsString("XP totale : 27"));
+        assertThat(result, containsString("VIS"));
+        assertThat(result, containsString("ATK"));
+        assertThat(result, containsString("CHA"));
+        assertThat(result, containsString("INT"));
+    }
 }
