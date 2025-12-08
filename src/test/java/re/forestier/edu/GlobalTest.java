@@ -68,4 +68,13 @@ public class GlobalTest {
         Affichage affichage = new Affichage();
         assertNotNull(affichage);
     }
+
+    @Test
+    @DisplayName("Test affichage avec inventaire non vide")
+    void testAffichageWithInventory() {
+        player p = new player("Test", "Test", "DWARF", 200, new ArrayList<>());
+        p.inventory.add("Épée");
+        String result = Affichage.afficherJoueur(p);
+        assertThat(result, containsString("Épée"));
+    }
 }
