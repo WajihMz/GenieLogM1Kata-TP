@@ -143,4 +143,15 @@ public class UpdatePlayerTests {
         assertThat(p.currenthealthpoints, is(12));
     }
 
+    @Test
+    @DisplayName("majFinDeTour HP >= 50% et < max - pas de bonus")
+    void majFinDeTour_hpSuperieurMoitie_pasBonus() {
+        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 25;
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(25));
+    }
+
 }
