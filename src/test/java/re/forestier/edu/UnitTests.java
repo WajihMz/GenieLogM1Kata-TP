@@ -89,4 +89,12 @@ public class UnitTests {
         assertNotNull(p);
     }
 
+    @Test
+    @DisplayName("removeMoney avec montant égal à l'argent - cas limite pour tuer mutation")
+    void removeMoney_montantEgalArgent_casLimite() {
+        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        p.removeMoney(100);
+        assertThat(p.money, is(0));
+    }
+
 }
