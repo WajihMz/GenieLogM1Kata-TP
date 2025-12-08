@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import static org.approvaltests.Approvals.verify;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -22,5 +23,23 @@ public class GlobalTest {
         player.inventory = new ArrayList<>();
 
         verify(Affichage.afficherJoueur(player));
+    }
+
+    @Test
+    @DisplayName("Test affichage joueur DWARF avec XP et inventaire")
+    void testAffichageDwarfWithXpAndInventory() {
+        player player = new player("Florian", "Gnognak le Barbare", "DWARF", 200, new ArrayList<>());
+        UpdatePlayer.addXp(player, 20);
+        player.inventory = new ArrayList<>();
+        String result = Affichage.afficherJoueur(player);
+        
+        assertThat(result, containsString("Gnognak le Barbare"));
+        assertThat(result, containsString("Florian"));
+        assertThat(result, containsString("Niveau : 2"));
+        assertThat(result, containsString("XP totale : 20"));
+        assertThat(result, containsString("DEF"));
+        assertThat(result, containsString("ALC"));
+        assertThat(result, containsString("ATK"));
+        assertThat(result, containsString("INT"));
     }
 }
