@@ -119,4 +119,16 @@ public class UpdatePlayerTests {
         assertThat(p.currenthealthpoints, is(17));
     }
 
+    @Test
+    @DisplayName("majFinDeTour ARCHER HP < 50% avec Magic Bow - bonus calculé")
+    void majFinDeTour_archerAvecMagicBow_bonusCalcule() {
+        player p = new player("T", "A", "ARCHER", 100, new ArrayList<>());
+        p.healthpoints = 40;
+        p.currenthealthpoints = 16;
+        p.inventory.add("Magic Bow");
+        
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.currenthealthpoints, is(18));
+    }
+
 }
