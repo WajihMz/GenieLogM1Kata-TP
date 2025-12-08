@@ -12,6 +12,7 @@ import static org.approvaltests.Approvals.verify;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class GlobalTest {
@@ -59,5 +60,12 @@ public class GlobalTest {
         assertThat(result, containsString("ATK"));
         assertThat(result, containsString("CHA"));
         assertThat(result, containsString("INT"));
+    }
+
+    @Test
+    @DisplayName("Test constructeur classe Affichage")
+    void testConstructeurAffichage() {
+        Affichage affichage = new Affichage();
+        assertNotNull(affichage);
     }
 }
