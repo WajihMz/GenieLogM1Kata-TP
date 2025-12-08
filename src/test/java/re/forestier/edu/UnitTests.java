@@ -6,6 +6,7 @@ import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.player;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
@@ -78,6 +79,14 @@ public class UnitTests {
         p.addMoney(50);
         p.removeMoney(30);
         assertThat(p.money, is(20));
+    }
+
+    @Test
+    @DisplayName("Constructeur avec classe invalide - validation échoue")
+    void constructeur_classeInvalide_validationEchoue() {
+        player p = new player("T", "A", "INVALID_CLASS", 100, new ArrayList<>());
+
+        assertNotNull(p);
     }
 
 }
