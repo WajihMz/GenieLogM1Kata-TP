@@ -1,5 +1,12 @@
 package re.forestier.edu.rpg;
 
+/**
+ * Classe utilitaire temporaire pour gérer les opérations sur player.java
+ * 
+ * Cette classe sera simplifiée/supprimée prochainement lorsque player.java sera supprimé.
+ * Les nouvelles classes (Adventurer, Archer, Dwarf) utilisent déjà les méthodes
+ * d'AbstractPlayer (addXp(), processEndOfTurn()) et n'ont pas besoin de cette classe.
+ */
 public class UpdatePlayer {
 
     public static boolean addXp(player player, int xp) {
