@@ -94,6 +94,22 @@ public class player {
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Joueur ").append(Avatar_name).append(" joué par ").append(playerName);
+        sb.append("\nNiveau : ").append(retrieveLevel()).append(" (XP totale : ").append(xp).append(")");
+        sb.append("\n\nCapacités :");
+        abilities.forEach((name, level) -> {
+            sb.append("\n   ").append(name).append(" : ").append(level);
+        });
+        sb.append("\n\nInventaire :");
+        inventory.forEach(item -> {
+            sb.append("\n   ").append(item);
+        });
+        return sb.toString();
+    }
+
     /*
     Ингредиенты:
         Для теста:
