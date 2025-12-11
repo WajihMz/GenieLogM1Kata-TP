@@ -59,25 +59,16 @@ public abstract class AbstractPlayer {
     }
 
     public int retrieveLevel() {
-        // (lvl-1) * 10 + round((lvl * xplvl-1)/4)
-        HashMap<Integer, Integer> levels = new HashMap<>();
-        levels.put(2, 10); // 1*10 + ((2*0)/4)
-        levels.put(3, 27); // 2*10 + ((3*10)/4)
-        levels.put(4, 57); // 3*10 + ((4*27)/4)
-        levels.put(5, 111); // 4*10 + ((5*57)/4)
-
-        if (xp < levels.get(2)) {
-            return 1;
-        } else if (xp < levels.get(3)) {
-            return 2;
+        int[] XP_THRESHOLDS = {10, 27, 57, 111};
+        int level = 1;
+        int i = 0;
+        while (i < XP_THRESHOLDS.length) {
+            if (xp >= XP_THRESHOLDS[i]) {
+                level = i + 2;
+            }
+            i++;
         }
-        if (xp < levels.get(4)) {
-            return 3;
-        }
-        if (xp < levels.get(5)) {
-            return 4;
-        }
-        return 5;
+        return level;
     }
 
     // Méthodes pour les points de vie
