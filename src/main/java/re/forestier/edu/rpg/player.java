@@ -29,7 +29,11 @@ public class player {
         AvatarClass = avatarClass;
         this.money = Integer.valueOf(money);
         this.inventory = inventory;
-        this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(AvatarClass).get(1);
+        
+        // Initialisation des abilities pour niveau 1 (pour compatibilité avec Affichage)
+        // Cette classe sera supprimée, les nouvelles classes utilisent AbstractPlayer.getStatistic()
+        this.abilities = new HashMap<>();
+        initializeAbilitiesForLevel1(avatarClass);
     }
 
     public String getAvatarClass () {
@@ -70,6 +74,24 @@ public class player {
 
     public int getXp() {
         return this.xp;
+    }
+
+    private void initializeAbilitiesForLevel1(String avatarClass) {
+        if ("ADVENTURER".equals(avatarClass)) {
+            abilities.put("INT", 1);
+            abilities.put("DEF", 1);
+            abilities.put("ATK", 3);
+            abilities.put("CHA", 2);
+        } else if ("ARCHER".equals(avatarClass)) {
+            abilities.put("INT", 1);
+            abilities.put("ATK", 3);
+            abilities.put("CHA", 1);
+            abilities.put("VIS", 3);
+        } else if ("DWARF".equals(avatarClass)) {
+            abilities.put("ALC", 4);
+            abilities.put("INT", 1);
+            abilities.put("ATK", 3);
+        }
     }
 
     /*
