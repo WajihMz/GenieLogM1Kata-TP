@@ -55,7 +55,13 @@ public abstract class AbstractPlayer {
     }
 
     public void addXp(int amount) {
+        int currentLevel = retrieveLevel();
         xp += amount;
+        int newLevel = retrieveLevel();
+
+        if (newLevel != currentLevel) {
+            receiveRandomItem();
+        }
     }
 
     public int retrieveLevel() {
@@ -152,6 +158,10 @@ public abstract class AbstractPlayer {
 
     public ArrayList<String> getInventory() {
         return inventory;
+    }
+
+    protected void receiveRandomItem() {
+        inventory.add(ITEM.randomItem().toString());
     }
 }
 
