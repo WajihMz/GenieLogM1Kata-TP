@@ -25,22 +25,11 @@ public class Dwarf extends AbstractPlayer {
     }
 
     @Override
-    public void processEndOfTurn() {
-        if (isKO()) {
-            System.out.println("Le joueur est KO !");
-            return;
-        }
-
-        if (currentHP < maximumHealth / 2) {
-            if (inventory.contains(ITEM.HOLY_ELIXIR.getName())) {
-                addCurrentHealthPoints(2);
-            } else {
-                addCurrentHealthPoints(1);
-            }
+    protected void applyHealthRegeneration() {
+        if (inventory.contains(ITEM.HOLY_ELIXIR.getName())) {
+            addCurrentHealthPoints(2);
         } else {
-            if (currentHP > maximumHealth) {
-                currentHP = maximumHealth;
-            }
+            addCurrentHealthPoints(1);
         }
     }
 }

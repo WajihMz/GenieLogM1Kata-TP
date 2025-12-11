@@ -24,21 +24,10 @@ public class Adventurer extends AbstractPlayer {
     }
 
     @Override
-    public void processEndOfTurn() {
-        if (isKO()) {
-            System.out.println("Le joueur est KO !");
-            return;
-        }
-
-        if (currentHP < maximumHealth / 2) {
-            addCurrentHealthPoints(2);
-            if (retrieveLevel() < 3) {
-                removeCurrentHealthPoints(1);
-            }
-        } else {
-            if (currentHP > maximumHealth) {
-                currentHP = maximumHealth;
-            }
+    protected void applyHealthRegeneration() {
+        addCurrentHealthPoints(2);
+        if (retrieveLevel() < 3) {
+            removeCurrentHealthPoints(1);
         }
     }
 }

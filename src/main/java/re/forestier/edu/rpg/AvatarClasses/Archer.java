@@ -25,23 +25,12 @@ public class Archer extends AbstractPlayer {
     }
 
     @Override
-    public void processEndOfTurn() {
-        if (isKO()) {
-            System.out.println("Le joueur est KO !");
-            return;
-        }
-
-        if (currentHP < maximumHealth / 2) {
-            addCurrentHealthPoints(1);
-            if (inventory.contains(ITEM.MAGIC_BOW.getName())) {
-                int bonusHP = currentHP / 8 - 1;
-                if (bonusHP > 0) {
-                    addCurrentHealthPoints(bonusHP);
-                }
-            }
-        } else {
-            if (currentHP > maximumHealth) {
-                currentHP = maximumHealth;
+    protected void applyHealthRegeneration() {
+        addCurrentHealthPoints(1);
+        if (inventory.contains(ITEM.MAGIC_BOW.getName())) {
+            int bonusHP = currentHP / 8 - 1;
+            if (bonusHP > 0) {
+                addCurrentHealthPoints(bonusHP);
             }
         }
     }

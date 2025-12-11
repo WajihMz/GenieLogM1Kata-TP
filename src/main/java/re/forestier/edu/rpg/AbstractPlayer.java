@@ -34,7 +34,24 @@ public abstract class AbstractPlayer {
 
     protected abstract void initializeStatistics();
 
-    public abstract void processEndOfTurn();
+    public void processEndOfTurn() {
+        if (isKO()) {
+            System.out.println("Le joueur est KO !");
+            return;
+        }
+
+        if (currentHP < maximumHealth / 2) {
+            applyHealthRegeneration();
+        }
+        
+        normalizeHealthPoints();
+    }
+
+    protected abstract void applyHealthRegeneration();
+
+    private void normalizeHealthPoints() {
+        currentHP = Math.min(currentHP, maximumHealth);
+    }
 
     // Méthodes pour l'argent
     public int getMoney() {
