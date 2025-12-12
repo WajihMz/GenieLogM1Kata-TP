@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 import re.forestier.edu.rpg.AvatarClasses.Archer;
 import re.forestier.edu.rpg.AvatarClasses.Dwarf;
@@ -21,17 +20,10 @@ import re.forestier.edu.rpg.AvatarClasses.Dwarf;
 public class UpdatePlayerTests {
     
     @Test
-    @DisplayName("Le constructeur UpdatePlayer doit être testé")
-    void testUpdatePlayerConstructor() {
-        UpdatePlayer updatePlayer = new UpdatePlayer();
-        assertNotNull(updatePlayer);
-    }
-
-    @Test
     @DisplayName("addXp doit retourner true quand le joueur monte de niveau")
     void addXp_quandJoueurMonteNiveau_retourneTrue() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
-        boolean result = UpdatePlayer.addXp(p, 10);
+        boolean result = p.addXp(10);
         assertThat(result, is(true));
         assertThat(p.getXp(), is(10));
         assertThat(p.retrieveLevel(), is(2));
@@ -41,7 +33,7 @@ public class UpdatePlayerTests {
     @DisplayName("addXp doit retourner false quand le joueur ne monte pas de niveau")
     void addXp_quandJoueurNeMontePasNiveau_retourneFalse() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
-        boolean result = UpdatePlayer.addXp(p, 5);
+        boolean result = p.addXp( 5);
         assertThat(result, is(false));
         assertThat(p.getXp(), is(5));
         assertThat(p.retrieveLevel(), is(1));
@@ -51,7 +43,7 @@ public class UpdatePlayerTests {
     @DisplayName("addXp doit ajouter un objet aléatoire quand le joueur monte de niveau")
     void addXp_quandJoueurMonteNiveau_ajouteObjetAleatoire() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
-        UpdatePlayer.addXp(p, 10);
+        p.addXp( 10);
         assertThat(p.inventory.size(), is(1));
         assertThat(p.inventory.get(0), is(notNullValue()));
     }
@@ -66,7 +58,7 @@ public class UpdatePlayerTests {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
         try {
-            UpdatePlayer.majFinDeTour(p);
+            p.processEndOfTurn();
             String printed = out.toString();
             assertThat(printed, containsString("Le joueur est KO !"));
         } finally {
@@ -81,9 +73,9 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 10;
         
-        UpdatePlayer.addXp(p, 5);
+        p.addXp( 5);
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(11));
     }
 
@@ -94,7 +86,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 10;
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(11));
     }
 
@@ -106,7 +98,7 @@ public class UpdatePlayerTests {
         p.currenthealthpoints = 10;
         p.inventory.add("Holy Elixir");
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(12));
     }
 
@@ -117,7 +109,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 16;
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(17));
     }
 
@@ -129,7 +121,7 @@ public class UpdatePlayerTests {
         p.currenthealthpoints = 16;
         p.inventory.add("Magic Bow");
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(18));
     }
 
@@ -139,9 +131,9 @@ public class UpdatePlayerTests {
         Adventurer p = new Adventurer("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 10;
-        UpdatePlayer.addXp(p, 27);
+        p.addXp( 27);
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(12));
     }
 
@@ -152,7 +144,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 25;
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(25));
     }
 
@@ -163,7 +155,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 45;
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(40));
     }
 
@@ -174,7 +166,7 @@ public class UpdatePlayerTests {
         p.healthpoints = 40;
         p.currenthealthpoints = 20;
         
-        UpdatePlayer.majFinDeTour(p);
+        p.processEndOfTurn();
         assertThat(p.currenthealthpoints, is(20));
     }
 

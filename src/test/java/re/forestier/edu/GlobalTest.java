@@ -2,7 +2,6 @@ package re.forestier.edu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 import re.forestier.edu.rpg.AvatarClasses.Archer;
 import re.forestier.edu.rpg.AvatarClasses.Dwarf;
@@ -18,7 +17,7 @@ public class GlobalTest {
     @Test
     void testAffichageBase() {
         Adventurer player = new Adventurer("Florian", "Gnognak le Barbare", 200, 0, new ArrayList<>());
-        UpdatePlayer.addXp(player, 20);
+        player.addXp(20);
         player.inventory = new ArrayList<>();
 
         verify(player.toString());
@@ -28,7 +27,7 @@ public class GlobalTest {
     @DisplayName("Test affichage joueur DWARF avec XP et inventaire")
     void testAffichageDwarfWithXpAndInventory() {
         Dwarf player = new Dwarf("Florian", "Gnognak le Barbare", 200, 0, new ArrayList<>());
-        UpdatePlayer.addXp(player, 20);
+        player.addXp(20);
         player.inventory = new ArrayList<>();
         String result = player.toString();
         
@@ -46,7 +45,7 @@ public class GlobalTest {
     @DisplayName("Test affichage joueur ARCHER niveau 3")
     void testAffichageArcherLevelThree() {
         Archer player = new Archer("Test", "Archer", 100, 0, new ArrayList<>());
-        UpdatePlayer.addXp(player, 27);
+        player.addXp(27);
         player.inventory = new ArrayList<>();
         String result = player.toString();
         

@@ -2,7 +2,6 @@ package re.forestier.edu;
 
 import org.junit.jupiter.api.*;
 
-import re.forestier.edu.rpg.UpdatePlayer;
 import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -45,7 +44,7 @@ public class UnitTests {
     @DisplayName("Test niveau intermédiaire - XP=26 -> niveau 2")
     void testNiveauIntermediaire_vingtSixXp_niveau2() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
-        UpdatePlayer.addXp(p, 26);
+        p.addXp( 26);
         assertThat(p.retrieveLevel(), is(2));
     }
 
@@ -53,7 +52,7 @@ public class UnitTests {
     @DisplayName("Test niveau intermédiaire - XP=56 -> niveau 3")
     void testNiveauIntermediaire_cinquanteSixXp_niveau3() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
-        UpdatePlayer.addXp(p, 56);
+        p.addXp( 56);
         assertThat(p.retrieveLevel(), is(3));
     }
 
@@ -61,7 +60,7 @@ public class UnitTests {
     @DisplayName("Test niveau intermédiaire - XP=110 -> niveau 4")
     void testNiveauIntermediaire_centDixXp_niveau4() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
-        UpdatePlayer.addXp(p, 110);
+        p.addXp( 110);
         assertThat(p.retrieveLevel(), is(4));
     }
 
@@ -69,7 +68,7 @@ public class UnitTests {
     @DisplayName("Test des niveaux de joueur - XP=111 -> niveau 5")
     void testLevelFiveAtOneHundredElevenXp() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
-        UpdatePlayer.addXp(p, 111);
+        p.addXp( 111);
         assertThat(p.retrieveLevel(), is(5));
     }
 
@@ -78,7 +77,7 @@ public class UnitTests {
     void retrieveLevel_xpExactMinimumNiveau3_retourne3() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         
-        UpdatePlayer.addXp(p, 28);
+        p.addXp( 28);
         assertEquals(3, p.retrieveLevel());
     }
 
@@ -87,7 +86,7 @@ public class UnitTests {
     void retrieveLevel_xpMaximumNiveau3_retourne3() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         
-        UpdatePlayer.addXp(p, 56);
+        p.addXp( 56);
         assertEquals(3, p.retrieveLevel());
     }
 
@@ -96,7 +95,7 @@ public class UnitTests {
     void retrieveLevel_xpJusteEnDessousNiveau4_retourne3() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         
-        UpdatePlayer.addXp(p, 56);
+        p.addXp( 56);
         assertEquals(3, p.retrieveLevel());
     }
 
@@ -105,7 +104,7 @@ public class UnitTests {
     void retrieveLevel_xpExactSeuilNiveau4_retourne4() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         
-        UpdatePlayer.addXp(p, 57);
+        p.addXp( 57);
         assertEquals(4, p.retrieveLevel());
     }
 

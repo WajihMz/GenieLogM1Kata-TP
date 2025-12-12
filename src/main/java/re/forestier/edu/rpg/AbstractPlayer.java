@@ -43,8 +43,13 @@ public abstract class AbstractPlayer {
     protected abstract void initializeStatistics();
 
     public void processEndOfTurn() {
+        currentHP = currenthealthpoints;
+        maximumHealth = healthpoints;
+        
         if (isKO()) {
             System.out.println("Le joueur est KO !");
+            currenthealthpoints = currentHP;
+            healthpoints = maximumHealth;
             return;
         }
 
@@ -53,6 +58,9 @@ public abstract class AbstractPlayer {
         }
         
         normalizeHealthPoints();
+        
+        currenthealthpoints = currentHP;
+        healthpoints = maximumHealth;
     }
 
     protected abstract void applyHealthRegeneration();
@@ -81,14 +89,16 @@ public abstract class AbstractPlayer {
         return xp;
     }
 
-    public void addXp(int amount) {
+    public boolean addXp(int amount) {
         int currentLevel = retrieveLevel();
         xp += amount;
         int newLevel = retrieveLevel();
 
         if (newLevel != currentLevel) {
             receiveRandomItem();
+            return true;
         }
+        return false;
     }
 
     public int retrieveLevel() {
