@@ -11,7 +11,6 @@ public class Archer extends AbstractPlayer {
     public Archer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
         this.className = "Archer";
-        this.classDescription = "A skilled marksman with exceptional vision";
     }
 
     @Override

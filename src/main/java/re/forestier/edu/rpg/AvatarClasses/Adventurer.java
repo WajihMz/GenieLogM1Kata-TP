@@ -10,7 +10,6 @@ public class Adventurer extends AbstractPlayer {
     public Adventurer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
         this.className = "Adventurer";
-        this.classDescription = "A versatile warrior skilled in various combat techniques";
     }
 
     @Override

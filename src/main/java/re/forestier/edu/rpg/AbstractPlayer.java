@@ -22,7 +22,6 @@ public abstract class AbstractPlayer {
     
     protected HashMap<STATS, Integer[]> statistics;
     protected String className;
-    protected String classDescription;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -203,4 +202,3 @@ public abstract class AbstractPlayer {
         inventory.add(ITEM.randomItem().toString());
     }
 }
-
