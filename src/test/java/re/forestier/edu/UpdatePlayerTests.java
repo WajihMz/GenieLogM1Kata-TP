@@ -14,7 +14,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import re.forestier.edu.rpg.UpdatePlayer;
-import re.forestier.edu.rpg.player;
+import re.forestier.edu.rpg.AvatarClasses.Adventurer;
+import re.forestier.edu.rpg.AvatarClasses.Archer;
+import re.forestier.edu.rpg.AvatarClasses.Dwarf;
 
 public class UpdatePlayerTests {
     
@@ -28,7 +30,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("addXp doit retourner true quand le joueur monte de niveau")
     void addXp_quandJoueurMonteNiveau_retourneTrue() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         boolean result = UpdatePlayer.addXp(p, 10);
         assertThat(result, is(true));
         assertThat(p.getXp(), is(10));
@@ -38,7 +40,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("addXp doit retourner false quand le joueur ne monte pas de niveau")
     void addXp_quandJoueurNeMontePasNiveau_retourneFalse() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         boolean result = UpdatePlayer.addXp(p, 5);
         assertThat(result, is(false));
         assertThat(p.getXp(), is(5));
@@ -48,7 +50,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("addXp doit ajouter un objet aléatoire quand le joueur monte de niveau")
     void addXp_quandJoueurMonteNiveau_ajouteObjetAleatoire() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         UpdatePlayer.addXp(p, 10);
         assertThat(p.inventory.size(), is(1));
         assertThat(p.inventory.get(0), is(notNullValue()));
@@ -57,7 +59,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour doit gérer le cas où le joueur est KO")
     void majFinDeTour_quandJoueurKO_afficheMessageKO() {
-        player p = new player("T", "A", "ADVENTURER", 20, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 20, new ArrayList<>());
         p.currenthealthpoints = 0;
         
         PrintStream originalOut = System.out;
@@ -75,7 +77,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour pour ADVENTURER niveau < 3 doit réduire les HP")
     void majFinDeTour_adventurerNiveauBas_reduitHP() {
-        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 10;
         
@@ -88,7 +90,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour DWARF HP < 50% sans Holy Elixir - bonus simple")
     void majFinDeTour_dwarfSansHolyElixir_bonusSimple() {
-        player p = new player("T", "A", "DWARF", 100, new ArrayList<>());
+        Dwarf p = new Dwarf("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 10;
         
@@ -99,7 +101,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour DWARF HP < 50% avec Holy Elixir - double bonus")
     void majFinDeTour_dwarfAvecHolyElixir_doubleBonus() {
-        player p = new player("T", "A", "DWARF", 100, new ArrayList<>());
+        Dwarf p = new Dwarf("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 10;
         p.inventory.add("Holy Elixir");
@@ -111,7 +113,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour ARCHER HP < 50% sans Magic Bow - bonus simple")
     void majFinDeTour_archerSansMagicBow_bonusSimple() {
-        player p = new player("T", "A", "ARCHER", 100, new ArrayList<>());
+        Archer p = new Archer("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 16;
         
@@ -122,7 +124,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour ARCHER HP < 50% avec Magic Bow - bonus calculé")
     void majFinDeTour_archerAvecMagicBow_bonusCalcule() {
-        player p = new player("T", "A", "ARCHER", 100, new ArrayList<>());
+        Archer p = new Archer("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 16;
         p.inventory.add("Magic Bow");
@@ -134,7 +136,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour ADVENTURER niveau >= 3 - pas de réduction HP")
     void majFinDeTour_adventurerNiveauEleve_pasReductionHP() {
-        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 10;
         UpdatePlayer.addXp(p, 27);
@@ -146,7 +148,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour HP >= 50% et < max - pas de bonus")
     void majFinDeTour_hpSuperieurMoitie_pasBonus() {
-        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 25;
         
@@ -157,7 +159,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour HP >= max - plafonné au maximum")
     void majFinDeTour_hpSuperieurMax_plafonneMax() {
-        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 45;
         
@@ -168,7 +170,7 @@ public class UpdatePlayerTests {
     @Test
     @DisplayName("majFinDeTour HP exactement à la moitié - pas de bonus")
     void majFinDeTour_hpExactementMoitie_pasBonus() {
-        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 100, new ArrayList<>());
         p.healthpoints = 40;
         p.currenthealthpoints = 20;
         

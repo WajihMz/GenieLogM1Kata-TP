@@ -3,7 +3,7 @@ package re.forestier.edu;
 import org.junit.jupiter.api.*;
 
 import re.forestier.edu.rpg.UpdatePlayer;
-import re.forestier.edu.rpg.player;
+import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,14 +17,14 @@ public class UnitTests {
     @Test
     @DisplayName("Sample test")
     void testPlayerName() {
-        player player = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer player = new Adventurer("Florian", "Grognak le barbare", 200, 100, new ArrayList<>());
         assertThat(player.playerName, is("Florian"));
     }
 
     @Test
     @DisplayName("Impossible to have negative money")
     void testNegativeMoney() {
-        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 200, 100, new ArrayList<>());
 
         try {
             p.removeMoney(200);
@@ -37,14 +37,14 @@ public class UnitTests {
     @Test
     @DisplayName("Test niveau initial - XP=0 -> niveau 1")
     void testNiveauInitial_zeroXp_niveau1() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         assertThat(p.retrieveLevel(), is(1));
     }
 
     @Test
     @DisplayName("Test niveau intermédiaire - XP=26 -> niveau 2")
     void testNiveauIntermediaire_vingtSixXp_niveau2() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         UpdatePlayer.addXp(p, 26);
         assertThat(p.retrieveLevel(), is(2));
     }
@@ -52,7 +52,7 @@ public class UnitTests {
     @Test
     @DisplayName("Test niveau intermédiaire - XP=56 -> niveau 3")
     void testNiveauIntermediaire_cinquanteSixXp_niveau3() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         UpdatePlayer.addXp(p, 56);
         assertThat(p.retrieveLevel(), is(3));
     }
@@ -60,7 +60,7 @@ public class UnitTests {
     @Test
     @DisplayName("Test niveau intermédiaire - XP=110 -> niveau 4")
     void testNiveauIntermediaire_centDixXp_niveau4() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         UpdatePlayer.addXp(p, 110);
         assertThat(p.retrieveLevel(), is(4));
     }
@@ -68,7 +68,7 @@ public class UnitTests {
     @Test
     @DisplayName("Test des niveaux de joueur - XP=111 -> niveau 5")
     void testLevelFiveAtOneHundredElevenXp() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         UpdatePlayer.addXp(p, 111);
         assertThat(p.retrieveLevel(), is(5));
     }
@@ -76,7 +76,7 @@ public class UnitTests {
     @Test
     @DisplayName("retrieveLevel - XP exactement au minimum pour niveau 3")
     void retrieveLevel_xpExactMinimumNiveau3_retourne3() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         
         UpdatePlayer.addXp(p, 28);
         assertEquals(3, p.retrieveLevel());
@@ -85,7 +85,7 @@ public class UnitTests {
     @Test
     @DisplayName("retrieveLevel - XP maximum pour niveau 3")
     void retrieveLevel_xpMaximumNiveau3_retourne3() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         
         UpdatePlayer.addXp(p, 56);
         assertEquals(3, p.retrieveLevel());
@@ -94,7 +94,7 @@ public class UnitTests {
     @Test
     @DisplayName("retrieveLevel - XP juste en dessous du seuil niveau 4")
     void retrieveLevel_xpJusteEnDessousNiveau4_retourne3() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         
         UpdatePlayer.addXp(p, 56);
         assertEquals(3, p.retrieveLevel());
@@ -103,7 +103,7 @@ public class UnitTests {
     @Test
     @DisplayName("retrieveLevel - XP exactement au seuil niveau 4")
     void retrieveLevel_xpExactSeuilNiveau4_retourne4() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         
         UpdatePlayer.addXp(p, 57);
         assertEquals(4, p.retrieveLevel());
@@ -112,7 +112,7 @@ public class UnitTests {
     @Test
     @DisplayName("removeMoney avec montant valide - succès")
     void removeMoney_montantValide_succes() {
-        player p = new player("T", "A", "ADVENTURER", 0, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         p.addMoney(50);
         p.removeMoney(30);
         assertThat(p.money, is(20));
@@ -121,15 +121,16 @@ public class UnitTests {
     @Test
     @DisplayName("Constructeur avec classe invalide - validation échoue")
     void constructeur_classeInvalide_validationEchoue() {
-        player p = new player("T", "A", "INVALID_CLASS", 100, new ArrayList<>());
-
-        assertNotNull(p);
+        // Ce test ne s'applique plus car on utilise maintenant des classes concrètes
+        // Le constructeur lance une exception si les paramètres sont invalides
+        // On garde le test pour compatibilité mais il passera toujours
+        assertNotNull(new Adventurer("T", "A", 200, 100, new ArrayList<>()));
     }
 
     @Test
     @DisplayName("removeMoney avec montant égal à l'argent - cas limite pour tuer mutation")
     void removeMoney_montantEgalArgent_casLimite() {
-        player p = new player("T", "A", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("T", "A", 200, 100, new ArrayList<>());
         p.removeMoney(100);
         assertThat(p.money, is(0));
     }

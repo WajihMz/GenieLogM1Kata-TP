@@ -8,13 +8,17 @@ import java.util.HashMap;
  * Contient toute la logique commune aux différents types d'avatars.
  */
 public abstract class AbstractPlayer {
-    protected String playerName;
-    protected String avatarName;
+    public String playerName;
+    public String avatarName;
     protected Money wallet;
-    protected int maximumHealth;
-    protected int currentHP;
-    protected int xp;
-    protected ArrayList<String> inventory;
+    public int maximumHealth;
+    public int currentHP;
+    public int xp;
+    public ArrayList<String> inventory;
+    
+    public int healthpoints;
+    public int currenthealthpoints;
+    public Integer money;
     
     protected HashMap<STATS, Integer[]> statistics;
     protected String className;
@@ -30,6 +34,10 @@ public abstract class AbstractPlayer {
         this.xp = 0;
         this.statistics = new HashMap<>();
         initializeStatistics();
+        
+        this.healthpoints = maximumHealth;
+        this.currenthealthpoints = maximumHealth;
+        this.money = money;
     }
 
     protected abstract void initializeStatistics();
@@ -60,10 +68,12 @@ public abstract class AbstractPlayer {
 
     public void addMoney(int amount) {
         wallet.addMoney(amount);
+        this.money = wallet.getAmount();
     }
 
     public void removeMoney(int amount) {
         wallet.removeMoney(amount);
+        this.money = wallet.getAmount();
     }
 
     // Méthodes pour l'XP et les niveaux
@@ -101,10 +111,12 @@ public abstract class AbstractPlayer {
 
     public void addCurrentHealthPoints(int amount) {
         currentHP = Math.min(currentHP + amount, maximumHealth);
+        currenthealthpoints = currentHP;
     }
 
     public void removeCurrentHealthPoints(int amount) {
         currentHP = Math.max(currentHP - amount, 0);
+        currenthealthpoints = currentHP;
     }
 
     public boolean isKO() {
