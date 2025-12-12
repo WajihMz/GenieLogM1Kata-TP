@@ -26,9 +26,10 @@ public class Adventurer extends AbstractPlayer {
     @Override
     protected void applyHealthRegeneration() {
         addCurrentHealthPoints(2);
-        if (retrieveLevel() < 3) {
-            removeCurrentHealthPoints(1);
+        if (retrieveLevel() >= 3) {
+            return;
         }
+        removeCurrentHealthPoints(1);
     }
 }
 

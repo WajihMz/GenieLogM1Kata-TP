@@ -28,9 +28,9 @@ public class Dwarf extends AbstractPlayer {
     protected void applyHealthRegeneration() {
         if (inventory.contains(ITEM.HOLY_ELIXIR.getName())) {
             addCurrentHealthPoints(2);
-        } else {
-            addCurrentHealthPoints(1);
+            return;
         }
+        addCurrentHealthPoints(1);
     }
 }
 

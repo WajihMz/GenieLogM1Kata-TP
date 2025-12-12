@@ -27,11 +27,12 @@ public class Archer extends AbstractPlayer {
     @Override
     protected void applyHealthRegeneration() {
         addCurrentHealthPoints(1);
-        if (inventory.contains(ITEM.MAGIC_BOW.getName())) {
-            int bonusHP = currentHP / 8 - 1;
-            if (bonusHP > 0) {
-                addCurrentHealthPoints(bonusHP);
-            }
+        if (!inventory.contains(ITEM.MAGIC_BOW.getName())) {
+            return;
+        }
+        int bonusHP = currentHP / 8 - 1;
+        if (bonusHP > 0) {
+            addCurrentHealthPoints(bonusHP);
         }
     }
 }
