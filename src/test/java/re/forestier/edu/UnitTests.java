@@ -114,7 +114,7 @@ public class UnitTests {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         p.addMoney(50);
         p.removeMoney(30);
-        assertThat(p.money, is(20));
+        assertThat(p.getMoney(), is(20));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class UnitTests {
     void removeMoney_montantEgalArgent_casLimite() {
         Adventurer p = new Adventurer("T", "A", 200, 100, new ArrayList<>());
         p.removeMoney(100);
-        assertThat(p.money, is(0));
+        assertThat(p.getMoney(), is(0));
     }
 
 }

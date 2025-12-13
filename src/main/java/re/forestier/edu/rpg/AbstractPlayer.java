@@ -18,10 +18,6 @@ public abstract class AbstractPlayer {
     public int xp;
     public ArrayList<String> inventory;
     
-    public int healthpoints;
-    public int currenthealthpoints;
-    public Integer money;
-    
     protected HashMap<STATS, Integer[]> statistics;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
@@ -34,22 +30,13 @@ public abstract class AbstractPlayer {
         this.xp = 0;
         this.statistics = new HashMap<>();
         initializeStatistics();
-        
-        this.healthpoints = maximumHealth;
-        this.currenthealthpoints = maximumHealth;
-        this.money = money;
     }
 
     protected abstract void initializeStatistics();
 
     public void processEndOfTurn() {
-        currentHP = currenthealthpoints;
-        maximumHealth = healthpoints;
-        
         if (isKO()) {
             System.out.println("Le joueur est KO !");
-            currenthealthpoints = currentHP;
-            healthpoints = maximumHealth;
             return;
         }
 
@@ -58,9 +45,6 @@ public abstract class AbstractPlayer {
         }
         
         normalizeHealthPoints();
-        
-        currenthealthpoints = currentHP;
-        healthpoints = maximumHealth;
     }
 
     protected abstract void applyHealthRegeneration();
@@ -76,12 +60,10 @@ public abstract class AbstractPlayer {
 
     public void addMoney(int amount) {
         wallet.addMoney(amount);
-        this.money = wallet.getAmount();
     }
 
     public void removeMoney(int amount) {
         wallet.removeMoney(amount);
-        this.money = wallet.getAmount();
     }
 
     // Méthodes pour l'XP et les niveaux
@@ -120,12 +102,10 @@ public abstract class AbstractPlayer {
 
     public void addCurrentHealthPoints(int amount) {
         currentHP = Math.min(currentHP + amount, maximumHealth);
-        currenthealthpoints = currentHP;
     }
 
     public void removeCurrentHealthPoints(int amount) {
         currentHP = Math.max(currentHP - amount, 0);
-        currenthealthpoints = currentHP;
     }
 
     public boolean isKO() {
