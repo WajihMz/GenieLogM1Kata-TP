@@ -8,6 +8,8 @@ import java.util.HashMap;
  * Contient toute la logique commune aux différents types d'avatars.
  */
 public abstract class AbstractPlayer {
+    private static final int[] XP_THRESHOLDS = {10, 27, 57, 111};
+    
     public String playerName;
     public String avatarName;
     protected Money wallet;
@@ -21,7 +23,6 @@ public abstract class AbstractPlayer {
     public Integer money;
     
     protected HashMap<STATS, Integer[]> statistics;
-    protected String className;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -101,7 +102,6 @@ public abstract class AbstractPlayer {
     }
 
     public int retrieveLevel() {
-        int[] XP_THRESHOLDS = {10, 27, 57, 111};
         int level = 1;
         int i = 0;
         while (i < XP_THRESHOLDS.length) {
@@ -188,10 +188,6 @@ public abstract class AbstractPlayer {
 
     public String getAvatarName() {
         return avatarName;
-    }
-
-    public String getClassName() {
-        return className;
     }
 
     public ArrayList<String> getInventory() {

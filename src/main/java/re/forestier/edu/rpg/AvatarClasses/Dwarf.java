@@ -10,7 +10,6 @@ public class Dwarf extends AbstractPlayer {
 
     public Dwarf(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
-        this.className = "Dwarf";
     }
 
     @Override
