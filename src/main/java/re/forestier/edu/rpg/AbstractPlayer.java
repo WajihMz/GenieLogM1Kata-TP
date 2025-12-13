@@ -95,11 +95,6 @@ public abstract class AbstractPlayer {
         return level;
     }
 
-    // Méthodes pour les points de vie
-    public int getCurrentHealthPoints() {
-        return currentHP;
-    }
-
     public void addCurrentHealthPoints(int amount) {
         currentHP = Math.min(currentHP + amount, maximumHealth);
     }
@@ -126,17 +121,6 @@ public abstract class AbstractPlayer {
         return statValues[index];
     }
 
-    public HashMap<STATS, Integer> getStatistics() {
-        HashMap<STATS, Integer> currentStats = new HashMap<>();
-        for (STATS stat : STATS.values()) {
-            int value = getStatistic(stat);
-            if (value > 0) {
-                currentStats.put(stat, value);
-            }
-        }
-        return currentStats;
-    }
-
     // Méthode pour l'affichage
     @Override
     public String toString() {
@@ -159,19 +143,6 @@ public abstract class AbstractPlayer {
         }
 
         return sb.toString();
-    }
-
-    // Getters
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public String getAvatarName() {
-        return avatarName;
-    }
-
-    public ArrayList<String> getInventory() {
-        return inventory;
     }
 
     protected void receiveRandomItem() {
