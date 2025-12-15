@@ -9,24 +9,24 @@ import java.util.List;
  * Encapsule toute la logique liée à l'inventaire.
  */
 class InventoryManager implements IInventoryManager {
-    private final List<String> inventory;
+    private final List<ITEM> inventory;
     
-    InventoryManager(AbstractPlayer player, List<String> initialInventory) {
+    InventoryManager(AbstractPlayer player, List<ITEM> initialInventory) {
         this.inventory = initialInventory != null ? new ArrayList<>(initialInventory) : new ArrayList<>();
     }
     
     @Override
-    public List<String> getInventory() {
+    public List<ITEM> getInventory() {
         return new ArrayList<>(inventory);
     }
     
     @Override
-    public void addToInventory(String item) {
+    public void addToInventory(ITEM item) {
         inventory.add(item);
     }
     
     @Override
-    public boolean inventoryContains(String item) {
+    public boolean inventoryContains(ITEM item) {
         return inventory.contains(item);
     }
     
@@ -46,12 +46,12 @@ class InventoryManager implements IInventoryManager {
     }
     
     @Override
-    public String getInventoryItem(int index) {
+    public ITEM getInventoryItem(int index) {
         return inventory.get(index);
     }
     
     @Override
-    public List<String> getInventoryInternal() {
+    public List<ITEM> getInventoryInternal() {
         return inventory;
     }
 }

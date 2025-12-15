@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 import re.forestier.edu.rpg.AvatarClasses.Archer;
 import re.forestier.edu.rpg.AvatarClasses.Dwarf;
+import re.forestier.edu.rpg.ITEM;
 
 import java.util.ArrayList;
 
@@ -64,8 +65,8 @@ public class GlobalTest {
     @DisplayName("Test affichage avec inventaire non vide")
     void testAffichageWithInventory() {
         Dwarf p = new Dwarf("Test", "Test", 200, 0, new ArrayList<>());
-        p.addToInventory("Épée");
+        p.addToInventory(ITEM.COMBAT_EDGE);
         String result = p.toString();
-        assertThat(result, containsString("Épée"));
+        assertThat(result, containsString("Combat Edge"));
     }
 }

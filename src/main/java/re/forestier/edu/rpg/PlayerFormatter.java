@@ -57,8 +57,12 @@ public class PlayerFormatter {
             }
             dataModel.put("stats", statsList);
             
-            // Préparer l'inventaire
-            dataModel.put("inventory", player.getInventory());
+            // Préparer l'inventaire (convertir ITEM en noms pour l'affichage)
+            List<String> inventoryNames = new ArrayList<>();
+            for (ITEM item : player.getInventory()) {
+                inventoryNames.add(item.getName());
+            }
+            dataModel.put("inventory", inventoryNames);
             
             StringWriter writer = new StringWriter();
             template.process(dataModel, writer);

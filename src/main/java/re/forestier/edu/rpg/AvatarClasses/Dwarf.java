@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Dwarf extends AbstractPlayer {
 
-    public Dwarf(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
+    public Dwarf(String playerName, String avatarName, int maximumHealth, int money, ArrayList<ITEM> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
     }
 
@@ -24,7 +24,7 @@ public class Dwarf extends AbstractPlayer {
 
     @Override
     protected void applyHealthRegeneration() {
-        if (inventoryContains(ITEM.HOLY_ELIXIR.getName())) {
+        if (inventoryContains(ITEM.HOLY_ELIXIR)) {
             addCurrentHealthPoints(2);
             return;
         }

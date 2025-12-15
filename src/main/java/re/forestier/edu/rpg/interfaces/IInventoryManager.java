@@ -1,5 +1,6 @@
 package re.forestier.edu.rpg.interfaces;
 
+import re.forestier.edu.rpg.ITEM;
 import java.util.List;
 
 /**
@@ -7,12 +8,12 @@ import java.util.List;
  * Définit les opérations liées à l'inventaire.
  */
 public interface IInventoryManager {
-    List<String> getInventory();
-    void addToInventory(String item);
-    boolean inventoryContains(String item);
+    List<ITEM> getInventory();
+    void addToInventory(ITEM item);
+    boolean inventoryContains(ITEM item);
     void clearInventory();
     boolean isInventoryEmpty();
     int getInventorySize();
-    String getInventoryItem(int index);
-    List<String> getInventoryInternal();
+    ITEM getInventoryItem(int index);
+    List<ITEM> getInventoryInternal();
 }

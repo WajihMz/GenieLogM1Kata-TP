@@ -2,10 +2,13 @@ package re.forestier.edu.rpg;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import re.forestier.edu.Exceptions.InventoryException;
 import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 
 public class AbstractPlayerTests {
@@ -16,6 +19,15 @@ public class AbstractPlayerTests {
         Adventurer a1 = new Adventurer("A", "B", 100, 100, null);
         
         assertNotNull(a1.getInventory());
+    }
+
+    @Test
+    @DisplayName("getDescription devrait retourner la description de l'objet")
+    void getDescription_RetourneDescription() {
+        assertEquals("Prevents surprise attacks", ITEM.LOOKOUT_RING.getDescription());
+        assertEquals("Increases XP gained by 100%", ITEM.DRAUPNIR.getDescription());
+        assertEquals("Recover your HP", ITEM.HOLY_ELIXIR.getDescription());
+        assertEquals("A powerful magical bow", ITEM.MAGIC_BOW.getDescription());
     }
 
     @Test
@@ -56,4 +68,165 @@ public class AbstractPlayerTests {
         int resultat = joueur.getStatistic(STATS.ATK);
         assertEquals(0, resultat);
     }
+
+    // Tests pour la gestion du poids (capacity)
+    
+    @Test
+    @DisplayName("getCapacity devrait retourner 50 par défaut")
+    void getCapacity_Retourne50ParDefaut() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        assertEquals(50, joueur.getCapacity());
+    }
+
+    @Test
+    @DisplayName("setCapacity devrait modifier la capacité")
+    void setCapacity_ModifieLaCapacite() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        joueur.setCapacity(100);
+        assertEquals(100, joueur.getCapacity());
+    }
+
+    @Test
+    @DisplayName("getCurrentInventoryWeight devrait retourner 0 pour un inventaire vide")
+    void getCurrentInventoryWeight_InventaireVide_Retourne0() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        assertEquals(0, joueur.getCurrentInventoryWeight());
+    }
+
+    @Test
+    @DisplayName("getCurrentInventoryWeight devrait calculer correctement le poids total")
+    void getCurrentInventoryWeight_CalculePoidsTotal() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        joueur.addToInventory(ITEM.LOOKOUT_RING);
+        joueur.addToInventory(ITEM.HOLY_ELIXIR);
+        assertEquals(2, joueur.getCurrentInventoryWeight());
+    }
+
+    @Test
+    @DisplayName("getRemainingCapacity devrait retourner la capacité totale pour un inventaire vide")
+    void getRemainingCapacity_InventaireVide_RetourneCapaciteTotale() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        assertEquals(50, joueur.getRemainingCapacity());
+    }
+
+    @Test
+    @DisplayName("getRemainingCapacity devrait calculer correctement la capacité restante")
+    void getRemainingCapacity_CalculeCapaciteRestante() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        joueur.addToInventory(ITEM.LOOKOUT_RING);
+        joueur.addToInventory(ITEM.HOLY_ELIXIR);
+        assertEquals(48, joueur.getRemainingCapacity());
+    }
+
+    @Test
+    @DisplayName("addToInventory devrait lancer InventoryException si le poids dépasse la capacité")
+    void addToInventory_PoidsDepasseCapacite_LanceInventoryException() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        joueur.setCapacity(2);
+        
+        joueur.addToInventory(ITEM.LOOKOUT_RING);
+        
+        InventoryException exception = assertThrows(InventoryException.class, 
+            () -> joueur.addToInventory(ITEM.DRAUPNIR));
+        assertTrue(exception.getMessage().contains("trop lourd"));
+    }
+
+    @Test
+    @DisplayName("addToInventory avec ITEM devrait lancer InventoryException si le poids dépasse la capacité")
+    void addToInventoryItem_PoidsDepasseCapacite_LanceInventoryException() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        joueur.setCapacity(1);
+        
+        InventoryException exception = assertThrows(InventoryException.class, 
+            () -> joueur.addToInventory(ITEM.DRAUPNIR));
+        assertTrue(exception.getMessage().contains("trop lourd"));
+    }
+
+
+    // Tests pour la méthode sell()
+
+    @Test
+    @DisplayName("sell devrait lancer InventoryException si l'objet n'est pas dans l'inventaire")
+    void sell_ObjetAbsent_LanceInventoryException() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        
+        InventoryException exception = assertThrows(InventoryException.class, 
+            () -> joueur.sell(ITEM.LOOKOUT_RING));
+        assertTrue(exception.getMessage().contains("pas dans l'inventaire"));
+    }
+
+    @Test
+    @DisplayName("sell devrait retirer l'objet et ajouter l'argent")
+    void sell_RetireObjetEtAjouteArgent() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 0, null);
+        joueur.addToInventory(ITEM.LOOKOUT_RING); // valeur 50
+        
+        joueur.sell(ITEM.LOOKOUT_RING);
+        
+        assertEquals(50, joueur.getMoney());
+        assertTrue(!joueur.inventoryContains(ITEM.LOOKOUT_RING));
+    }
+
+    @Test
+    @DisplayName("sell avec buyer devrait lancer InventoryException si l'objet n'est pas dans l'inventaire du vendeur")
+    void sellAvecBuyer_ObjetAbsent_LanceInventoryException() {
+        Adventurer vendeur = new Adventurer("Vendeur", "Avatar", 100, 100, null);
+        Adventurer acheteur = new Adventurer("Acheteur", "Avatar", 100, 100, null);
+        
+        InventoryException exception = assertThrows(InventoryException.class, 
+            () -> vendeur.sell(ITEM.LOOKOUT_RING, acheteur));
+        assertTrue(exception.getMessage().contains("pas dans l'inventaire du vendeur"));
+    }
+
+    @Test
+    @DisplayName("sell avec buyer devrait lancer InventoryException si l'acheteur n'a pas assez d'argent")
+    void sellAvecBuyer_AcheteurPasAssezArgent_LanceInventoryException() {
+        Adventurer vendeur = new Adventurer("Vendeur", "Avatar", 100, 100, null);
+        Adventurer acheteur = new Adventurer("Acheteur", "Avatar", 100, 10, null);
+        
+        vendeur.addToInventory(ITEM.DRAUPNIR);
+        
+        InventoryException exception = assertThrows(InventoryException.class, 
+            () -> vendeur.sell(ITEM.DRAUPNIR, acheteur));
+        assertTrue(exception.getMessage().contains("pas assez d'argent"));
+    }
+
+    @Test
+    @DisplayName("sell avec buyer devrait transférer l'objet et l'argent correctement")
+    void sellAvecBuyer_TransfereObjetEtArgent() {
+        Adventurer vendeur = new Adventurer("Vendeur", "Avatar", 100, 0, null);
+        Adventurer acheteur = new Adventurer("Acheteur", "Avatar", 100, 100, null);
+        
+        vendeur.addToInventory(ITEM.LOOKOUT_RING);
+        
+        vendeur.sell(ITEM.LOOKOUT_RING, acheteur);
+        
+        assertEquals(50, vendeur.getMoney());
+        assertEquals(50, acheteur.getMoney());
+        
+        assertTrue(!vendeur.inventoryContains(ITEM.LOOKOUT_RING));
+        assertTrue(acheteur.inventoryContains(ITEM.LOOKOUT_RING));
+    }
+
+    // Test pour couvrir le catch dans receiveRandomItem()
+    
+    @Test
+    @DisplayName("receiveRandomItem devrait gérer silencieusement les objets trop lourds")
+    void receiveRandomItem_ObjetTropLourd_GereSilencieusement() throws Exception {
+
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        joueur.setCapacity(1);
+        
+        joueur.addToInventory(ITEM.LOOKOUT_RING);
+                
+        java.lang.reflect.Method method = AbstractPlayer.class.getDeclaredMethod("receiveRandomItem");
+        method.setAccessible(true);
+        
+        for (int i = 0; i < 50; i++) {
+            method.invoke(joueur);
+        }
+        
+        assertTrue(joueur.getCurrentInventoryWeight() <= joueur.getCapacity());
+    }
+    
 }

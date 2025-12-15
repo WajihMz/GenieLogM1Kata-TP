@@ -50,9 +50,4 @@ public enum ITEM {
         Random random = new Random();
         return items[random.nextInt(items.length)];
     }
-
-    @Override
-    public String toString() {
-        return name + " : " + description;
-    }
 }

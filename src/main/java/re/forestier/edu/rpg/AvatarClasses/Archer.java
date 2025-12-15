@@ -10,7 +10,7 @@ public class Archer extends AbstractPlayer {
     private static final int ARCHER_BONUS_DIVISOR = 8;
     private static final int ARCHER_BONUS_SUBTRACT = 1;
 
-    public Archer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
+    public Archer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<ITEM> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
     }
 
@@ -27,7 +27,7 @@ public class Archer extends AbstractPlayer {
     @Override
     protected void applyHealthRegeneration() {
         addCurrentHealthPoints(1);
-        if (!inventoryContains(ITEM.MAGIC_BOW.getName())) {
+        if (!inventoryContains(ITEM.MAGIC_BOW)) {
             return;
         }
         int bonusHP = getCurrentHP() / ARCHER_BONUS_DIVISOR - ARCHER_BONUS_SUBTRACT;

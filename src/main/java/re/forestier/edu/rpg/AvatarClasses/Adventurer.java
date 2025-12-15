@@ -1,13 +1,14 @@
 package re.forestier.edu.rpg.AvatarClasses;
 
 import re.forestier.edu.rpg.AbstractPlayer;
+import re.forestier.edu.rpg.ITEM;
 import re.forestier.edu.rpg.STATS;
 
 import java.util.ArrayList;
 
 public class Adventurer extends AbstractPlayer {
 
-    public Adventurer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
+    public Adventurer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<ITEM> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
     }
 

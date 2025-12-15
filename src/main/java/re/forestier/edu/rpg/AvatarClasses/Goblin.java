@@ -1,6 +1,7 @@
 package re.forestier.edu.rpg.AvatarClasses;
 
 import re.forestier.edu.rpg.AbstractPlayer;
+import re.forestier.edu.rpg.ITEM;
 import re.forestier.edu.rpg.STATS;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class Goblin extends AbstractPlayer {
     private static final double SURVIVAL_THRESHOLD = 0.25;
 
-    public Goblin(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
+    public Goblin(String playerName, String avatarName, int maximumHealth, int money, ArrayList<ITEM> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
     }
 

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 import re.forestier.edu.rpg.AvatarClasses.Archer;
 import re.forestier.edu.rpg.AvatarClasses.Dwarf;
+import re.forestier.edu.rpg.ITEM;
 
 public class UpdatePlayerTests {
     
@@ -92,7 +93,7 @@ public class UpdatePlayerTests {
         Dwarf p = new Dwarf("T", "A", 200, 100, new ArrayList<>());
         p.setMaximumHealth(40);
         p.setCurrentHP(10);
-        p.addToInventory("Holy Elixir");
+        p.addToInventory(ITEM.HOLY_ELIXIR);
         
         p.processEndOfTurn();
         assertThat(p.getCurrentHP(), is(12));
@@ -115,7 +116,7 @@ public class UpdatePlayerTests {
         Archer p = new Archer("T", "A", 200, 100, new ArrayList<>());
         p.setMaximumHealth(40);
         p.setCurrentHP(16);
-        p.addToInventory("Magic Bow");
+        p.addToInventory(ITEM.MAGIC_BOW);
         
         p.processEndOfTurn();
         assertThat(p.getCurrentHP(), is(18));

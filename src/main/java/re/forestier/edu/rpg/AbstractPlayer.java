@@ -1,5 +1,6 @@
 package re.forestier.edu.rpg;
 
+import re.forestier.edu.Exceptions.InventoryException;
 import re.forestier.edu.rpg.interfaces.IHealthManager;
 import re.forestier.edu.rpg.interfaces.IExperienceManager;
 import re.forestier.edu.rpg.interfaces.IInventoryManager;
@@ -20,6 +21,7 @@ public abstract class AbstractPlayer {
     private int maximumHealth;
     private int currentHP;
     int xp;
+    private int capacity;
     
     private GameLogger logger = new ConsoleLogger();
     private final IHealthManager healthManager;
@@ -27,13 +29,14 @@ public abstract class AbstractPlayer {
     private final IInventoryManager inventoryManager;
     private final IStatisticsManager statisticsManager;
 
-    public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
+    public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<ITEM> inventory) {
         this.playerName = playerName;
         this.avatarName = avatarName;
         this.maximumHealth = maximumHealth;
         this.currentHP = maximumHealth;
         this.wallet = new Money(money);
         this.xp = 0;
+        this.capacity = 50;
         this.healthManager = new HealthManager(this);
         this.experienceManager = new ExperienceManager(this);
         this.inventoryManager = new InventoryManager(this, inventory);
@@ -129,15 +132,39 @@ public abstract class AbstractPlayer {
         this.currentHP = Math.max(0, Math.min(currentHP, maximumHealth));
     }
 
-    public List<String> getInventory() {
+    public List<ITEM> getInventory() {
         return inventoryManager.getInventory();
     }
 
-    public void addToInventory(String item) {
+    public void addToInventory(ITEM item) {
+        int itemWeight = item.getWeight();
+        if (getCurrentInventoryWeight() + itemWeight > capacity) {
+            throw new InventoryException("L'objet est trop lourd ! Capacité maximale dépassée.");
+        }
         inventoryManager.addToInventory(item);
     }
+    
+    public int getCurrentInventoryWeight() {
+        int totalWeight = 0;
+        for (ITEM item : inventoryManager.getInventoryInternal()) {
+            totalWeight += item.getWeight();
+        }
+        return totalWeight;
+    }
+    
+    public int getCapacity() {
+        return capacity;
+    }
+    
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+    
+    public int getRemainingCapacity() {
+        return capacity - getCurrentInventoryWeight();
+    }
 
-    public boolean inventoryContains(String item) {
+    public boolean inventoryContains(ITEM item) {
         return inventoryManager.inventoryContains(item);
     }
 
@@ -153,7 +180,7 @@ public abstract class AbstractPlayer {
         return inventoryManager.getInventorySize();
     }
 
-    public String getInventoryItem(int index) {
+    public ITEM getInventoryItem(int index) {
         return inventoryManager.getInventoryItem(index);
     }
 
@@ -169,6 +196,46 @@ public abstract class AbstractPlayer {
     }
 
     protected void receiveRandomItem() {
-        addToInventory(ITEM.randomItem().toString());
+        ITEM randomItem = ITEM.randomItem();
+        try {
+            addToInventory(randomItem);
+        } catch (InventoryException e) {
+            // Si l'objet est trop lourd, on ne l'ajoute pas (pas d'exception)
+            // Le joueur ne reçoit pas l'objet
+        }
+    }
+    
+    public void sell(ITEM item) {
+        if (!inventoryContains(item)) {
+            throw new InventoryException("L'objet n'est pas dans l'inventaire !");
+        }
+        
+        // Retirer l'objet de l'inventaire
+        List<ITEM> inventory = inventoryManager.getInventoryInternal();
+        inventory.remove(item);
+        
+        // Ajouter l'argent
+        addMoney(item.getValue());
+    }
+    
+    public void sell(ITEM item, AbstractPlayer buyer) {
+        if (!inventoryContains(item)) {
+            throw new InventoryException("L'objet n'est pas dans l'inventaire du vendeur !");
+        }
+        
+        if (buyer.getMoney() < item.getValue()) {
+            throw new InventoryException("L'acheteur n'a pas assez d'argent !");
+        }
+        
+        // Retirer l'objet de l'inventaire du vendeur
+        List<ITEM> inventory = inventoryManager.getInventoryInternal();
+        inventory.remove(item);
+        
+        // Transférer l'argent
+        buyer.removeMoney(item.getValue());
+        addMoney(item.getValue());
+        
+        // Ajouter l'objet à l'inventaire de l'acheteur
+        buyer.addToInventory(item);
     }
 }
