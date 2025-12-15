@@ -2,6 +2,8 @@ package re.forestier.edu.rpg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Classe abstraite de base pour tous les types de joueurs.
@@ -17,9 +19,9 @@ public abstract class AbstractPlayer {
     private int maximumHealth;
     private int currentHP;
     private int xp;
-    public ArrayList<String> inventory;
+    public List<String> inventory;
     
-    protected HashMap<STATS, Integer[]> statistics;
+    protected Map<STATS, Integer[]> statistics;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -133,7 +135,7 @@ public abstract class AbstractPlayer {
         this.currentHP = Math.max(0, Math.min(currentHP, maximumHealth));
     }
 
-    public ArrayList<String> getInventory() {
+    public List<String> getInventory() {
         return inventory;
     }
 
