@@ -19,11 +19,11 @@ public abstract class AbstractPlayer {
     private int currentHP;
     int xp;
     
-    protected Map<STATS, Integer[]> statistics;
     private GameLogger logger = new ConsoleLogger();
     private final HealthManager healthManager;
     private final ExperienceManager experienceManager;
     private final InventoryManager inventoryManager;
+    private final StatisticsManager statisticsManager;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -32,14 +32,18 @@ public abstract class AbstractPlayer {
         this.currentHP = maximumHealth;
         this.wallet = new Money(money);
         this.xp = 0;
-        this.statistics = new HashMap<>();
         this.healthManager = new HealthManager(this);
         this.experienceManager = new ExperienceManager(this);
         this.inventoryManager = new InventoryManager(this, inventory);
+        this.statisticsManager = new StatisticsManager(this);
         initializeStatistics();
     }
 
     protected abstract void initializeStatistics();
+    
+    protected void putStatistic(STATS stat, Integer[] values) {
+        statisticsManager.putStatistic(stat, values);
+    }
 
     public void setLogger(GameLogger logger) {
         this.logger = logger;
@@ -153,16 +157,7 @@ public abstract class AbstractPlayer {
 
     // Méthodes pour les statistiques
     public int getStatistic(STATS stat) {
-        if (!statistics.containsKey(stat)) {
-            return 0;
-        }
-        Integer[] statValues = statistics.get(stat);
-        int level = retrieveLevel();
-        int index = level - 1;
-        if (index < 0 || index >= statValues.length) {
-            return 0;
-        }
-        return statValues[index];
+        return statisticsManager.getStatistic(stat);
     }
 
     // Méthode pour l'affichage

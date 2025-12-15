@@ -24,7 +24,7 @@ public class AbstractPlayerTests {
         AbstractPlayer joueur = new Adventurer("Test", "Avatar", 100, 100, null) {
             @Override
             protected void initializeStatistics() {
-                statistics.put(STATS.ATK, new Integer[]{3, 3, 5, 5, 5, 5, 5, 5, 5, 5});
+                putStatistic(STATS.ATK, new Integer[]{3, 3, 5, 5, 5, 5, 5, 5, 5, 5});
             }
         };
         int resultat = joueur.getStatistic(STATS.VIS);
