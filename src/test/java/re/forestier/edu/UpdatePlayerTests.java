@@ -5,9 +5,9 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
+
+import re.forestier.edu.rpg.TestLogger;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,16 +53,13 @@ public class UpdatePlayerTests {
         Adventurer p = new Adventurer("T", "A", 200, 20, new ArrayList<>());
         p.setCurrentHP(0);
         
-        PrintStream originalOut = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        try {
-            p.processEndOfTurn();
-            String printed = out.toString();
-            assertThat(printed, containsString("Le joueur est KO !"));
-        } finally {
-            System.setOut(originalOut);
-        }
+        TestLogger testLogger = new TestLogger();
+        p.setLogger(testLogger);
+        
+        p.processEndOfTurn();
+        
+        String loggedMessage = testLogger.getLastMessage();
+        assertThat(loggedMessage, containsString("Le joueur est KO !"));
     }
 
     @Test

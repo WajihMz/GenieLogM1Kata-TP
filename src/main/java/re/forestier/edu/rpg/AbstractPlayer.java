@@ -22,6 +22,7 @@ public abstract class AbstractPlayer {
     private List<String> inventory;
     
     protected Map<STATS, Integer[]> statistics;
+    private GameLogger logger = new ConsoleLogger();
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -37,9 +38,13 @@ public abstract class AbstractPlayer {
 
     protected abstract void initializeStatistics();
 
+    public void setLogger(GameLogger logger) {
+        this.logger = logger;
+    }
+
     public void processEndOfTurn() {
         if (isKO()) {
-            System.out.println("Le joueur est KO !");
+            logger.log("Le joueur est KO !");
             return;
         }
 
