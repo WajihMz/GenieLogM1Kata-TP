@@ -32,8 +32,4 @@ class StatisticsManager {
         }
         return statValues[index];
     }
-    
-    Map<STATS, Integer[]> getStatistics() {
-        return statistics;
-    }
 }

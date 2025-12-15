@@ -1,9 +1,7 @@
 package re.forestier.edu.rpg;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Classe abstraite de base pour tous les types de joueurs.

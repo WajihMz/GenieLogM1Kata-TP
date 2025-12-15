@@ -8,11 +8,9 @@ import java.util.List;
  * Encapsule toute la logique liée à l'inventaire.
  */
 class InventoryManager {
-    private final AbstractPlayer player;
     private final List<String> inventory;
     
     InventoryManager(AbstractPlayer player, List<String> initialInventory) {
-        this.player = player;
         this.inventory = initialInventory != null ? new ArrayList<>(initialInventory) : new ArrayList<>();
     }
     
