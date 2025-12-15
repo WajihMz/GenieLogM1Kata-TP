@@ -1,5 +1,9 @@
 package re.forestier.edu.rpg;
 
+import re.forestier.edu.rpg.interfaces.IHealthManager;
+import re.forestier.edu.rpg.interfaces.IExperienceManager;
+import re.forestier.edu.rpg.interfaces.IInventoryManager;
+import re.forestier.edu.rpg.interfaces.IStatisticsManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +22,10 @@ public abstract class AbstractPlayer {
     int xp;
     
     private GameLogger logger = new ConsoleLogger();
-    private final HealthManager healthManager;
-    private final ExperienceManager experienceManager;
-    private final InventoryManager inventoryManager;
-    private final StatisticsManager statisticsManager;
+    private final IHealthManager healthManager;
+    private final IExperienceManager experienceManager;
+    private final IInventoryManager inventoryManager;
+    private final IStatisticsManager statisticsManager;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;

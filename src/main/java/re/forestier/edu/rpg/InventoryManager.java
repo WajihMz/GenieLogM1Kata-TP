@@ -1,5 +1,6 @@
 package re.forestier.edu.rpg;
 
+import re.forestier.edu.rpg.interfaces.IInventoryManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,42 +8,50 @@ import java.util.List;
  * Manager responsable de la gestion de l'inventaire d'un joueur.
  * Encapsule toute la logique liée à l'inventaire.
  */
-class InventoryManager {
+class InventoryManager implements IInventoryManager {
     private final List<String> inventory;
     
     InventoryManager(AbstractPlayer player, List<String> initialInventory) {
         this.inventory = initialInventory != null ? new ArrayList<>(initialInventory) : new ArrayList<>();
     }
     
-    List<String> getInventory() {
+    @Override
+    public List<String> getInventory() {
         return new ArrayList<>(inventory);
     }
     
-    void addToInventory(String item) {
+    @Override
+    public void addToInventory(String item) {
         inventory.add(item);
     }
     
-    boolean inventoryContains(String item) {
+    @Override
+    public boolean inventoryContains(String item) {
         return inventory.contains(item);
     }
     
-    void clearInventory() {
+    @Override
+    public void clearInventory() {
         inventory.clear();
     }
     
-    boolean isInventoryEmpty() {
+    @Override
+    public boolean isInventoryEmpty() {
         return inventory.isEmpty();
     }
     
-    int getInventorySize() {
+    @Override
+    public int getInventorySize() {
         return inventory.size();
     }
     
-    String getInventoryItem(int index) {
+    @Override
+    public String getInventoryItem(int index) {
         return inventory.get(index);
     }
     
-    List<String> getInventoryInternal() {
+    @Override
+    public List<String> getInventoryInternal() {
         return inventory;
     }
 }

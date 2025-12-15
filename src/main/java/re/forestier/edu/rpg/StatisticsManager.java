@@ -1,5 +1,6 @@
 package re.forestier.edu.rpg;
 
+import re.forestier.edu.rpg.interfaces.IStatisticsManager;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ import java.util.Map;
  * Manager responsable de la gestion des statistiques d'un joueur.
  * Encapsule toute la logique liée aux statistiques.
  */
-class StatisticsManager {
+class StatisticsManager implements IStatisticsManager {
     private final AbstractPlayer player;
     private final Map<STATS, Integer[]> statistics;
     
@@ -16,11 +17,13 @@ class StatisticsManager {
         this.statistics = new HashMap<>();
     }
     
-    void putStatistic(STATS stat, Integer[] values) {
+    @Override
+    public void putStatistic(STATS stat, Integer[] values) {
         statistics.put(stat, values);
     }
     
-    int getStatistic(STATS stat) {
+    @Override
+    public int getStatistic(STATS stat) {
         if (!statistics.containsKey(stat)) {
             return 0;
         }
