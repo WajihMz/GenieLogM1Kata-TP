@@ -94,7 +94,7 @@ public class GoblinTests {
         
         gobelin.processEndOfTurn();
         
-        assertEquals(60, gobelin.currentHP);
+        assertEquals(60, gobelin.getCurrentHP());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class GoblinTests {
         
         gobelin.processEndOfTurn();
         
-        assertEquals(41, gobelin.currentHP);
+        assertEquals(41, gobelin.getCurrentHP());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class GoblinTests {
         
         gobelin.processEndOfTurn();
         
-        assertEquals(22, gobelin.currentHP);
+        assertEquals(22, gobelin.getCurrentHP());
     }
 
     @Test
@@ -127,7 +127,7 @@ public class GoblinTests {
         
         gobelin.processEndOfTurn();
         
-        assertEquals(0, gobelin.currentHP);
+        assertEquals(0, gobelin.getCurrentHP());
         assertTrue(gobelin.isKO());
     }
 
@@ -139,7 +139,7 @@ public class GoblinTests {
         
         gobelin.processEndOfTurn();
         
-        assertEquals(50, gobelin.currentHP);
+        assertEquals(50, gobelin.getCurrentHP());
     }
 
     @Test
@@ -150,7 +150,7 @@ public class GoblinTests {
         
         gobelin.processEndOfTurn();
         
-        assertEquals(26, gobelin.currentHP);
+        assertEquals(26, gobelin.getCurrentHP());
     }
 
     @Test
@@ -161,7 +161,7 @@ public class GoblinTests {
         
         gobelin.processEndOfTurn();
         
-        assertEquals(26, gobelin.currentHP);
+        assertEquals(26, gobelin.getCurrentHP());
     }
 
     // ========== Tests de création et initialisation ==========
@@ -171,8 +171,8 @@ public class GoblinTests {
     void gobelin_AvecInventaireNull_InitialiseInventaireVide() {
         Goblin gobelin = new Goblin("Test", "Goblin", 100, 50, null);
         
-        assertNotNull(gobelin.inventory);
-        assertTrue(gobelin.inventory.isEmpty());
+        assertNotNull(gobelin.getInventory());
+        assertTrue(gobelin.isInventoryEmpty());
     }
 
     @Test
@@ -180,12 +180,12 @@ public class GoblinTests {
     void gobelin_Creation_InitialiseCorrectement() {
         Goblin gobelin = new Goblin("Joueur1", "Snaga", 150, 75, null);
         
-        assertEquals("Joueur1", gobelin.playerName);
-        assertEquals("Snaga", gobelin.avatarName);
-        assertEquals(150, gobelin.maximumHealth);
-        assertEquals(150, gobelin.currentHP);
+        assertEquals("Joueur1", gobelin.getPlayerName());
+        assertEquals("Snaga", gobelin.getAvatarName());
+        assertEquals(150, gobelin.getMaximumHealth());
+        assertEquals(150, gobelin.getCurrentHP());
         assertEquals(75, gobelin.getMoney());
-        assertEquals(0, gobelin.xp);
+        assertEquals(0, gobelin.getXp());
         assertEquals(1, gobelin.retrieveLevel());
     }
 
@@ -195,13 +195,13 @@ public class GoblinTests {
     @DisplayName("Gobelin devrait gagner un objet en montant de niveau")
     void gobelin_QuandMonteNiveau_GagneObjet() {
         Goblin gobelin = new Goblin("Test", "Goblin", 100, 50, null);
-        int tailleInitiale = gobelin.inventory.size();
+        int tailleInitiale = gobelin.getInventorySize();
         
         boolean aMonteNiveau = gobelin.addXp(10);
         
         assertTrue(aMonteNiveau);
         assertEquals(2, gobelin.retrieveLevel());
-        assertEquals(tailleInitiale + 1, gobelin.inventory.size());
+        assertEquals(tailleInitiale + 1, gobelin.getInventorySize());
     }
 
     @Test

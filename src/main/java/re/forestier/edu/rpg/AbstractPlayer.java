@@ -1,24 +1,31 @@
 package re.forestier.edu.rpg;
 
+import re.forestier.edu.rpg.interfaces.IHealthManager;
+import re.forestier.edu.rpg.interfaces.IExperienceManager;
+import re.forestier.edu.rpg.interfaces.IInventoryManager;
+import re.forestier.edu.rpg.interfaces.IStatisticsManager;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * Classe abstraite de base pour tous les types de joueurs.
  * Contient toute la logique commune aux différents types d'avatars.
  */
 public abstract class AbstractPlayer {
-    private static final int[] XP_THRESHOLDS = {10, 27, 57, 111};
+    static final double HEALTH_REGEN_THRESHOLD = 0.5;
     
-    public String playerName;
-    public String avatarName;
+    private String playerName;
+    private String avatarName;
     protected Money wallet;
-    public int maximumHealth;
-    public int currentHP;
-    public int xp;
-    public ArrayList<String> inventory;
+    private int maximumHealth;
+    private int currentHP;
+    int xp;
     
-    protected HashMap<STATS, Integer[]> statistics;
+    private GameLogger logger = new ConsoleLogger();
+    private final IHealthManager healthManager;
+    private final IExperienceManager experienceManager;
+    private final IInventoryManager inventoryManager;
+    private final IStatisticsManager statisticsManager;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -26,32 +33,38 @@ public abstract class AbstractPlayer {
         this.maximumHealth = maximumHealth;
         this.currentHP = maximumHealth;
         this.wallet = new Money(money);
-        this.inventory = inventory != null ? inventory : new ArrayList<>();
         this.xp = 0;
-        this.statistics = new HashMap<>();
+        this.healthManager = new HealthManager(this);
+        this.experienceManager = new ExperienceManager(this);
+        this.inventoryManager = new InventoryManager(this, inventory);
+        this.statisticsManager = new StatisticsManager(this);
         initializeStatistics();
     }
 
     protected abstract void initializeStatistics();
+    
+    protected void putStatistic(STATS stat, Integer[] values) {
+        statisticsManager.putStatistic(stat, values);
+    }
+
+    public void setLogger(GameLogger logger) {
+        this.logger = logger;
+    }
 
     public void processEndOfTurn() {
-        if (isKO()) {
-            System.out.println("Le joueur est KO !");
+        if (healthManager.isKO()) {
+            logger.log("Le joueur est KO !");
             return;
         }
 
-        if (currentHP < maximumHealth / 2) {
+        if (healthManager.shouldRegenerate()) {
             applyHealthRegeneration();
         }
         
-        normalizeHealthPoints();
+        healthManager.normalizeHealthPoints();
     }
 
     protected abstract void applyHealthRegeneration();
-
-    private void normalizeHealthPoints() {
-        currentHP = Math.min(currentHP, maximumHealth);
-    }
 
     // Méthodes pour l'argent
     public int getMoney() {
@@ -72,80 +85,90 @@ public abstract class AbstractPlayer {
     }
 
     public boolean addXp(int amount) {
-        int currentLevel = retrieveLevel();
-        xp += amount;
-        int newLevel = retrieveLevel();
-
-        if (newLevel != currentLevel) {
-            receiveRandomItem();
-            return true;
-        }
-        return false;
+        return experienceManager.addXp(amount);
     }
 
     public int retrieveLevel() {
-        int level = 1;
-        int i = 0;
-        while (i < XP_THRESHOLDS.length) {
-            if (xp >= XP_THRESHOLDS[i]) {
-                level = i + 2;
-            }
-            i++;
-        }
-        return level;
+        return experienceManager.retrieveLevel();
     }
 
     public void addCurrentHealthPoints(int amount) {
-        currentHP = Math.min(currentHP + amount, maximumHealth);
+        healthManager.addCurrentHealthPoints(amount);
     }
 
     public void removeCurrentHealthPoints(int amount) {
-        currentHP = Math.max(currentHP - amount, 0);
+        healthManager.removeCurrentHealthPoints(amount);
     }
 
     public boolean isKO() {
-        return currentHP == 0;
+        return healthManager.isKO();
+    }
+
+    // Getters et setters pour l'encapsulation
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public String getAvatarName() {
+        return avatarName;
+    }
+
+    public int getMaximumHealth() {
+        return maximumHealth;
+    }
+
+    public void setMaximumHealth(int maximumHealth) {
+        this.maximumHealth = maximumHealth;
+    }
+
+    public int getCurrentHP() {
+        return currentHP;
+    }
+
+    public void setCurrentHP(int currentHP) {
+        this.currentHP = Math.max(0, Math.min(currentHP, maximumHealth));
+    }
+
+    public List<String> getInventory() {
+        return inventoryManager.getInventory();
+    }
+
+    public void addToInventory(String item) {
+        inventoryManager.addToInventory(item);
+    }
+
+    public boolean inventoryContains(String item) {
+        return inventoryManager.inventoryContains(item);
+    }
+
+    public void clearInventory() {
+        inventoryManager.clearInventory();
+    }
+
+    public boolean isInventoryEmpty() {
+        return inventoryManager.isInventoryEmpty();
+    }
+
+    public int getInventorySize() {
+        return inventoryManager.getInventorySize();
+    }
+
+    public String getInventoryItem(int index) {
+        return inventoryManager.getInventoryItem(index);
     }
 
     // Méthodes pour les statistiques
     public int getStatistic(STATS stat) {
-        if (!statistics.containsKey(stat)) {
-            return 0;
-        }
-        Integer[] statValues = statistics.get(stat);
-        int level = retrieveLevel();
-        int index = level - 1;
-        if (index < 0 || index >= statValues.length) {
-            return 0;
-        }
-        return statValues[index];
+        return statisticsManager.getStatistic(stat);
     }
 
     // Méthode pour l'affichage
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Joueur ").append(avatarName).append(" joué par ").append(playerName);
-        sb.append("\nNiveau : ").append(retrieveLevel()).append(" (XP totale : ").append(xp).append(")");
-        sb.append("\n\nCapacités :");
-        
-        STATS[] displayOrder = {STATS.DEF, STATS.ATK, STATS.CHA, STATS.INT, STATS.ALC, STATS.VIS};
-        for (STATS stat : displayOrder) {
-            int value = getStatistic(stat);
-            if (value > 0) {
-                sb.append("\n   ").append(stat.name()).append(" : ").append(value);
-            }
-        }
-        
-        sb.append("\n\nInventaire :");
-        for (String item : inventory) {
-            sb.append("\n   ").append(item);
-        }
-
-        return sb.toString();
+        return new PlayerFormatter(this).format();
     }
 
     protected void receiveRandomItem() {
-        inventory.add(ITEM.randomItem().toString());
+        addToInventory(ITEM.randomItem().toString());
     }
 }

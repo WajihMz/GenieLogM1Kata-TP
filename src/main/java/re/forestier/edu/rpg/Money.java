@@ -1,5 +1,7 @@
 package re.forestier.edu.rpg;
 
+import re.forestier.edu.Exceptions.NotEnoughMoneyException;
+
 /**
  * Classe encapsulant la gestion de l'argent d'un joueur.
  * Assure la validation des montants et empêche les valeurs négatives.
@@ -30,7 +32,7 @@ public class Money {
             throw new IllegalArgumentException("Cannot remove negative amount!");
         }
         if (this.amount - amount < 0) {
-            throw new IllegalArgumentException("Player can't have a negative money!");
+            throw new NotEnoughMoneyException("Player can't have a negative money!");
         }
         this.amount -= amount;
     }
