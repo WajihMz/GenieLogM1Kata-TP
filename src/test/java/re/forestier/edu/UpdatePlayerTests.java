@@ -167,4 +167,21 @@ public class UpdatePlayerTests {
         assertThat(p.getCurrentHP(), is(20));
     }
 
+    @Test
+    @DisplayName("Archer avec HP=8 et Magic Bow - bonusHP devrait être 0")
+    void majFinDeTour_archerHpHuitAvecMagicBow_bonusHPZero() {
+        Archer p = new Archer("T", "A", 200, 100, new ArrayList<>());
+        p.setMaximumHealth(100);
+        p.setCurrentHP(8); // 8/8 - 1 = 0
+        p.addToInventory(ITEM.MAGIC_BOW);
+        
+        int hpAvant = p.getCurrentHP();
+        p.processEndOfTurn();
+        int hpApres = p.getCurrentHP();
+        
+        // Le bonus devrait être 0, donc seulement +1 HP de base
+        // HP devrait passer de 8 à 9 (pas de bonus supplémentaire)
+        assertThat(hpApres, is(hpAvant + 1));
+    }
+
 }

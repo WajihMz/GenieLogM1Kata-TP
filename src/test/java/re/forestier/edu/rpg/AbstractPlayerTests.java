@@ -228,5 +228,63 @@ public class AbstractPlayerTests {
         
         assertTrue(joueur.getCurrentInventoryWeight() <= joueur.getCapacity());
     }
+
+    @Test
+    @DisplayName("isKO devrait retourner false pour un joueur vivant")
+    void isKO_JoueurVivant_RetourneFalse() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        assertTrue(!joueur.isKO());
+    }
+
+    @Test
+    @DisplayName("isInventoryEmpty devrait retourner false pour un inventaire non vide")
+    void isInventoryEmpty_InventaireNonVide_RetourneFalse() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        joueur.addToInventory(ITEM.LOOKOUT_RING);
+        assertTrue(!joueur.isInventoryEmpty());
+    }
+
+    @Test
+    @DisplayName("normalizeHealthPoints devrait être appelé après processEndOfTurn")
+    void processEndOfTurn_NormaliseHealthPoints() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        // Forcer HP > maxHealth en utilisant la réflexion ou en modifiant directement
+        // Pour tester, on peut vérifier que les HP ne dépassent pas maxHealth après processEndOfTurn
+        joueur.addCurrentHealthPoints(150); // Dépasser maxHealth
+        
+        joueur.processEndOfTurn();
+        
+        assertTrue(joueur.getCurrentHP() <= joueur.getMaximumHealth());
+    }
+
+    @Test
+    @DisplayName("sell avec buyer ayant exactement le montant nécessaire devrait fonctionner")
+    void sellAvecBuyer_MontantExact_Fonctionne() {
+        Adventurer vendeur = new Adventurer("Vendeur", "Avatar", 100, 0, null);
+        Adventurer acheteur = new Adventurer("Acheteur", "Avatar", 100, 50, null); // Exactement la valeur de LOOKOUT_RING
+        
+        vendeur.addToInventory(ITEM.LOOKOUT_RING); // valeur 50
+        
+        vendeur.sell(ITEM.LOOKOUT_RING, acheteur);
+        
+        assertEquals(50, vendeur.getMoney());
+        assertEquals(0, acheteur.getMoney());
+        assertTrue(!vendeur.inventoryContains(ITEM.LOOKOUT_RING));
+        assertTrue(acheteur.inventoryContains(ITEM.LOOKOUT_RING));
+    }
+
+    @Test
+    @DisplayName("toMarkdown avec inventaire non vide devrait afficher les objets")
+    void toMarkdown_InventaireNonVide_AfficheObjets() {
+        Adventurer joueur = new Adventurer("Test", "Avatar", 100, 100, null);
+        joueur.addToInventory(ITEM.LOOKOUT_RING);
+        joueur.addToInventory(ITEM.HOLY_ELIXIR);
+        
+        String markdown = joueur.toMarkdown();
+        
+        assertTrue(markdown.contains("Lookout Ring"));
+        assertTrue(markdown.contains("Holy Elixir"));
+        assertTrue(!markdown.contains("(vide)"));
+    }
     
 }

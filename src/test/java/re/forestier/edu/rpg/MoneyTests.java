@@ -98,5 +98,21 @@ public class MoneyTests {
         money.addMoney(25);
         assertThat(money.getAmount(), is(75));
     }
+
+    @Test
+    @DisplayName("addMoney avec montant égal à 0 - ne change rien")
+    void addMoney_montantZero_neChangeRien() {
+        Money money = new Money(50);
+        money.addMoney(0);
+        assertThat(money.getAmount(), is(50));
+    }
+
+    @Test
+    @DisplayName("removeMoney avec montant égal à 0 - ne change rien")
+    void removeMoney_montantZero_neChangeRien() {
+        Money money = new Money(50);
+        money.removeMoney(0);
+        assertThat(money.getAmount(), is(50));
+    }
 }
 
