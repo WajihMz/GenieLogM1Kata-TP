@@ -18,7 +18,7 @@ public class GlobalTest {
     void testAffichageBase() {
         Adventurer player = new Adventurer("Florian", "Gnognak le Barbare", 200, 0, new ArrayList<>());
         player.addXp(20);
-        player.inventory = new ArrayList<>();
+        player.clearInventory();
 
         verify(player.toString());
     }
@@ -28,7 +28,7 @@ public class GlobalTest {
     void testAffichageDwarfWithXpAndInventory() {
         Dwarf player = new Dwarf("Florian", "Gnognak le Barbare", 200, 0, new ArrayList<>());
         player.addXp(20);
-        player.inventory = new ArrayList<>();
+        player.clearInventory();
         String result = player.toString();
         
         assertThat(result, containsString("Gnognak le Barbare"));
@@ -46,7 +46,7 @@ public class GlobalTest {
     void testAffichageArcherLevelThree() {
         Archer player = new Archer("Test", "Archer", 100, 0, new ArrayList<>());
         player.addXp(27);
-        player.inventory = new ArrayList<>();
+        player.clearInventory();
         String result = player.toString();
         
         assertThat(result, containsString("Archer"));
@@ -64,7 +64,7 @@ public class GlobalTest {
     @DisplayName("Test affichage avec inventaire non vide")
     void testAffichageWithInventory() {
         Dwarf p = new Dwarf("Test", "Test", 200, 0, new ArrayList<>());
-        p.inventory.add("Épée");
+        p.addToInventory("Épée");
         String result = p.toString();
         assertThat(result, containsString("Épée"));
     }

@@ -15,7 +15,7 @@ public class AbstractPlayerTests {
     void testConstructeurAvecInventoryNull() {
         Adventurer a1 = new Adventurer("A", "B", 100, 100, null);
         
-        assertNotNull(a1.inventory);
+        assertNotNull(a1.getInventory());
     }
 
     @Test

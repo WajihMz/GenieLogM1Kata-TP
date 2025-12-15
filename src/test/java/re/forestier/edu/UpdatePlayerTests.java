@@ -43,8 +43,8 @@ public class UpdatePlayerTests {
     void addXp_quandJoueurMonteNiveau_ajouteObjetAleatoire() {
         Adventurer p = new Adventurer("T", "A", 200, 0, new ArrayList<>());
         p.addXp( 10);
-        assertThat(p.inventory.size(), is(1));
-        assertThat(p.inventory.get(0), is(notNullValue()));
+        assertThat(p.getInventorySize(), is(1));
+        assertThat(p.getInventoryItem(0), is(notNullValue()));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class UpdatePlayerTests {
         Dwarf p = new Dwarf("T", "A", 200, 100, new ArrayList<>());
         p.setMaximumHealth(40);
         p.setCurrentHP(10);
-        p.inventory.add("Holy Elixir");
+        p.addToInventory("Holy Elixir");
         
         p.processEndOfTurn();
         assertThat(p.getCurrentHP(), is(12));
@@ -118,7 +118,7 @@ public class UpdatePlayerTests {
         Archer p = new Archer("T", "A", 200, 100, new ArrayList<>());
         p.setMaximumHealth(40);
         p.setCurrentHP(16);
-        p.inventory.add("Magic Bow");
+        p.addToInventory("Magic Bow");
         
         p.processEndOfTurn();
         assertThat(p.getCurrentHP(), is(18));

@@ -171,8 +171,8 @@ public class GoblinTests {
     void gobelin_AvecInventaireNull_InitialiseInventaireVide() {
         Goblin gobelin = new Goblin("Test", "Goblin", 100, 50, null);
         
-        assertNotNull(gobelin.inventory);
-        assertTrue(gobelin.inventory.isEmpty());
+        assertNotNull(gobelin.getInventory());
+        assertTrue(gobelin.isInventoryEmpty());
     }
 
     @Test
@@ -195,13 +195,13 @@ public class GoblinTests {
     @DisplayName("Gobelin devrait gagner un objet en montant de niveau")
     void gobelin_QuandMonteNiveau_GagneObjet() {
         Goblin gobelin = new Goblin("Test", "Goblin", 100, 50, null);
-        int tailleInitiale = gobelin.inventory.size();
+        int tailleInitiale = gobelin.getInventorySize();
         
         boolean aMonteNiveau = gobelin.addXp(10);
         
         assertTrue(aMonteNiveau);
         assertEquals(2, gobelin.retrieveLevel());
-        assertEquals(tailleInitiale + 1, gobelin.inventory.size());
+        assertEquals(tailleInitiale + 1, gobelin.getInventorySize());
     }
 
     @Test

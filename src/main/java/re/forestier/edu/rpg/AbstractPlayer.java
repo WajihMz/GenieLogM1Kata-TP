@@ -19,7 +19,7 @@ public abstract class AbstractPlayer {
     private int maximumHealth;
     private int currentHP;
     private int xp;
-    public List<String> inventory;
+    private List<String> inventory;
     
     protected Map<STATS, Integer[]> statistics;
 
@@ -136,7 +136,7 @@ public abstract class AbstractPlayer {
     }
 
     public List<String> getInventory() {
-        return inventory;
+        return new ArrayList<>(inventory); // Copie défensive
     }
 
     public void addToInventory(String item) {
@@ -145,6 +145,22 @@ public abstract class AbstractPlayer {
 
     public boolean inventoryContains(String item) {
         return inventory.contains(item);
+    }
+
+    public void clearInventory() {
+        inventory.clear();
+    }
+
+    public boolean isInventoryEmpty() {
+        return inventory.isEmpty();
+    }
+
+    public int getInventorySize() {
+        return inventory.size();
+    }
+
+    public String getInventoryItem(int index) {
+        return inventory.get(index);
     }
 
     // Méthodes pour les statistiques
@@ -178,7 +194,7 @@ public abstract class AbstractPlayer {
         }
         
         sb.append("\n\nInventaire :");
-        for (String item : inventory) {
+        for (String item : getInventory()) {
             sb.append("\n   ").append(item);
         }
 
@@ -186,6 +202,6 @@ public abstract class AbstractPlayer {
     }
 
     protected void receiveRandomItem() {
-        inventory.add(ITEM.randomItem().toString());
+        addToInventory(ITEM.randomItem().toString());
     }
 }
