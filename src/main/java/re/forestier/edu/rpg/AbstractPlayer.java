@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public abstract class AbstractPlayer {
     private static final int[] XP_THRESHOLDS = {10, 27, 57, 111};
-    private static final double HEALTH_REGEN_THRESHOLD = 0.5;
+    static final double HEALTH_REGEN_THRESHOLD = 0.5;
     
     private String playerName;
     private String avatarName;
@@ -23,6 +23,7 @@ public abstract class AbstractPlayer {
     
     protected Map<STATS, Integer[]> statistics;
     private GameLogger logger = new ConsoleLogger();
+    private final HealthManager healthManager;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -33,6 +34,7 @@ public abstract class AbstractPlayer {
         this.inventory = inventory != null ? inventory : new ArrayList<>();
         this.xp = 0;
         this.statistics = new HashMap<>();
+        this.healthManager = new HealthManager(this);
         initializeStatistics();
     }
 
@@ -43,23 +45,19 @@ public abstract class AbstractPlayer {
     }
 
     public void processEndOfTurn() {
-        if (isKO()) {
+        if (healthManager.isKO()) {
             logger.log("Le joueur est KO !");
             return;
         }
 
-        if (currentHP < maximumHealth * HEALTH_REGEN_THRESHOLD) {
+        if (healthManager.shouldRegenerate()) {
             applyHealthRegeneration();
         }
         
-        normalizeHealthPoints();
+        healthManager.normalizeHealthPoints();
     }
 
     protected abstract void applyHealthRegeneration();
-
-    private void normalizeHealthPoints() {
-        currentHP = Math.min(currentHP, maximumHealth);
-    }
 
     // Méthodes pour l'argent
     public int getMoney() {
@@ -104,15 +102,15 @@ public abstract class AbstractPlayer {
     }
 
     public void addCurrentHealthPoints(int amount) {
-        currentHP = Math.min(currentHP + amount, maximumHealth);
+        healthManager.addCurrentHealthPoints(amount);
     }
 
     public void removeCurrentHealthPoints(int amount) {
-        currentHP = Math.max(currentHP - amount, 0);
+        healthManager.removeCurrentHealthPoints(amount);
     }
 
     public boolean isKO() {
-        return currentHP == 0;
+        return healthManager.isKO();
     }
 
     // Getters et setters pour l'encapsulation
