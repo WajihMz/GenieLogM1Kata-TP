@@ -3,7 +3,9 @@ Niveau : ${level} (XP totale : ${xp})
 
 Capacités :
 <#list stats as stat>
+<#if stat.value gt 0>
    ${stat.name} : ${stat.value}
+</#if>
 </#list>
 
 Inventaire :
