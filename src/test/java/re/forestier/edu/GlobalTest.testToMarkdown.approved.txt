@@ -1,0 +1,16 @@
+# Florian *as* Gnognak le Barbare
+
+# About
+
+**Level** : 2
+
+## Statistics :
+
+ * **DEF** : 1
+ * **ATK** : 3
+ * **CHA** : 3
+ * **INT** : 2
+
+## Inventory :
+
+ * (vide)

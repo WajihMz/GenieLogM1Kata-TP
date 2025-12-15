@@ -195,6 +195,37 @@ public abstract class AbstractPlayer {
         return new PlayerFormatter(this).format();
     }
 
+    public String toMarkdown() {
+        StringBuilder markdown = new StringBuilder();
+        
+        markdown.append("# ").append(playerName).append(" *as* ").append(avatarName).append("\n\n");
+        
+        markdown.append("# About\n\n");
+        markdown.append("**Level** : ").append(retrieveLevel()).append("\n\n");
+        
+        markdown.append("## Statistics :\n\n");
+        STATS[] displayOrder = {STATS.DEF, STATS.ATK, STATS.CHA, STATS.INT, STATS.ALC, STATS.VIS};
+        for (STATS stat : displayOrder) {
+            int value = getStatistic(stat);
+            if (value > 0) {
+                markdown.append(" * **").append(stat.name()).append("** : ").append(value).append("\n");
+            }
+        }
+        markdown.append("\n");
+        
+        markdown.append("## Inventory :\n\n");
+        List<ITEM> inventory = getInventory();
+        if (inventory.isEmpty()) {
+            markdown.append(" * (vide)\n");
+        } else {
+            for (ITEM item : inventory) {
+                markdown.append(" * ").append(item.getName()).append("\n");
+            }
+        }
+        
+        return markdown.toString();
+    }
+
     protected void receiveRandomItem() {
         ITEM randomItem = ITEM.randomItem();
         try {
