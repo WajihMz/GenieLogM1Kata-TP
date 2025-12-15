@@ -18,12 +18,12 @@ public abstract class AbstractPlayer {
     private int maximumHealth;
     private int currentHP;
     int xp;
-    private List<String> inventory;
     
     protected Map<STATS, Integer[]> statistics;
     private GameLogger logger = new ConsoleLogger();
     private final HealthManager healthManager;
     private final ExperienceManager experienceManager;
+    private final InventoryManager inventoryManager;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -31,11 +31,11 @@ public abstract class AbstractPlayer {
         this.maximumHealth = maximumHealth;
         this.currentHP = maximumHealth;
         this.wallet = new Money(money);
-        this.inventory = inventory != null ? inventory : new ArrayList<>();
         this.xp = 0;
         this.statistics = new HashMap<>();
         this.healthManager = new HealthManager(this);
         this.experienceManager = new ExperienceManager(this);
+        this.inventoryManager = new InventoryManager(this, inventory);
         initializeStatistics();
     }
 
@@ -124,31 +124,31 @@ public abstract class AbstractPlayer {
     }
 
     public List<String> getInventory() {
-        return new ArrayList<>(inventory); // Copie défensive
+        return inventoryManager.getInventory();
     }
 
     public void addToInventory(String item) {
-        inventory.add(item);
+        inventoryManager.addToInventory(item);
     }
 
     public boolean inventoryContains(String item) {
-        return inventory.contains(item);
+        return inventoryManager.inventoryContains(item);
     }
 
     public void clearInventory() {
-        inventory.clear();
+        inventoryManager.clearInventory();
     }
 
     public boolean isInventoryEmpty() {
-        return inventory.isEmpty();
+        return inventoryManager.isInventoryEmpty();
     }
 
     public int getInventorySize() {
-        return inventory.size();
+        return inventoryManager.getInventorySize();
     }
 
     public String getInventoryItem(int index) {
-        return inventory.get(index);
+        return inventoryManager.getInventoryItem(index);
     }
 
     // Méthodes pour les statistiques
@@ -182,7 +182,7 @@ public abstract class AbstractPlayer {
         }
         
         sb.append("\n\nInventaire :");
-        for (String item : getInventory()) {
+        for (String item : inventoryManager.getInventoryInternal()) {
             sb.append("\n   ").append(item);
         }
 
