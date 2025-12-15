@@ -10,7 +10,6 @@ import java.util.Map;
  * Contient toute la logique commune aux différents types d'avatars.
  */
 public abstract class AbstractPlayer {
-    private static final int[] XP_THRESHOLDS = {10, 27, 57, 111};
     static final double HEALTH_REGEN_THRESHOLD = 0.5;
     
     private String playerName;
@@ -18,12 +17,13 @@ public abstract class AbstractPlayer {
     protected Money wallet;
     private int maximumHealth;
     private int currentHP;
-    private int xp;
+    int xp;
     private List<String> inventory;
     
     protected Map<STATS, Integer[]> statistics;
     private GameLogger logger = new ConsoleLogger();
     private final HealthManager healthManager;
+    private final ExperienceManager experienceManager;
 
     public AbstractPlayer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         this.playerName = playerName;
@@ -35,6 +35,7 @@ public abstract class AbstractPlayer {
         this.xp = 0;
         this.statistics = new HashMap<>();
         this.healthManager = new HealthManager(this);
+        this.experienceManager = new ExperienceManager(this);
         initializeStatistics();
     }
 
@@ -78,27 +79,11 @@ public abstract class AbstractPlayer {
     }
 
     public boolean addXp(int amount) {
-        int currentLevel = retrieveLevel();
-        xp += amount;
-        int newLevel = retrieveLevel();
-
-        if (newLevel != currentLevel) {
-            receiveRandomItem();
-            return true;
-        }
-        return false;
+        return experienceManager.addXp(amount);
     }
 
     public int retrieveLevel() {
-        int level = 1;
-        int i = 0;
-        while (i < XP_THRESHOLDS.length) {
-            if (xp >= XP_THRESHOLDS[i]) {
-                level = i + 2;
-            }
-            i++;
-        }
-        return level;
+        return experienceManager.retrieveLevel();
     }
 
     public void addCurrentHealthPoints(int amount) {
