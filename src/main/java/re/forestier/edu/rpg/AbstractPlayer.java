@@ -165,25 +165,7 @@ public abstract class AbstractPlayer {
     // Méthode pour l'affichage
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Joueur ").append(avatarName).append(" joué par ").append(playerName);
-        sb.append("\nNiveau : ").append(retrieveLevel()).append(" (XP totale : ").append(xp).append(")");
-        sb.append("\n\nCapacités :");
-        
-        STATS[] displayOrder = {STATS.DEF, STATS.ATK, STATS.CHA, STATS.INT, STATS.ALC, STATS.VIS};
-        for (STATS stat : displayOrder) {
-            int value = getStatistic(stat);
-            if (value > 0) {
-                sb.append("\n   ").append(stat.name()).append(" : ").append(value);
-            }
-        }
-        
-        sb.append("\n\nInventaire :");
-        for (String item : inventoryManager.getInventoryInternal()) {
-            sb.append("\n   ").append(item);
-        }
-
-        return sb.toString();
+        return new PlayerFormatter(this).format();
     }
 
     protected void receiveRandomItem() {
