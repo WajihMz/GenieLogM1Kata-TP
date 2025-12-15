@@ -10,12 +10,12 @@ import java.util.HashMap;
 public abstract class AbstractPlayer {
     private static final int[] XP_THRESHOLDS = {10, 27, 57, 111};
     
-    public String playerName;
-    public String avatarName;
+    private String playerName;
+    private String avatarName;
     protected Money wallet;
-    public int maximumHealth;
-    public int currentHP;
-    public int xp;
+    private int maximumHealth;
+    private int currentHP;
+    private int xp;
     public ArrayList<String> inventory;
     
     protected HashMap<STATS, Integer[]> statistics;
@@ -105,6 +105,43 @@ public abstract class AbstractPlayer {
 
     public boolean isKO() {
         return currentHP == 0;
+    }
+
+    // Getters et setters pour l'encapsulation
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public String getAvatarName() {
+        return avatarName;
+    }
+
+    public int getMaximumHealth() {
+        return maximumHealth;
+    }
+
+    public void setMaximumHealth(int maximumHealth) {
+        this.maximumHealth = maximumHealth;
+    }
+
+    public int getCurrentHP() {
+        return currentHP;
+    }
+
+    public void setCurrentHP(int currentHP) {
+        this.currentHP = Math.max(0, Math.min(currentHP, maximumHealth));
+    }
+
+    public ArrayList<String> getInventory() {
+        return inventory;
+    }
+
+    public void addToInventory(String item) {
+        inventory.add(item);
+    }
+
+    public boolean inventoryContains(String item) {
+        return inventory.contains(item);
     }
 
     // Méthodes pour les statistiques

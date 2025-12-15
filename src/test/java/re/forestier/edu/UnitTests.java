@@ -17,7 +17,7 @@ public class UnitTests {
     @DisplayName("Sample test")
     void testPlayerName() {
         Adventurer player = new Adventurer("Florian", "Grognak le barbare", 200, 100, new ArrayList<>());
-        assertThat(player.playerName, is("Florian"));
+        assertThat(player.getPlayerName(), is("Florian"));
     }
 
     @Test

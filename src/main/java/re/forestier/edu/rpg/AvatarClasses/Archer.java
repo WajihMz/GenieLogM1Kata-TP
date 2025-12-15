@@ -28,7 +28,7 @@ public class Archer extends AbstractPlayer {
         if (!inventory.contains(ITEM.MAGIC_BOW.getName())) {
             return;
         }
-        int bonusHP = currentHP / 8 - 1;
+        int bonusHP = getCurrentHP() / 8 - 1;
         if (bonusHP > 0) {
             addCurrentHealthPoints(bonusHP);
         }
