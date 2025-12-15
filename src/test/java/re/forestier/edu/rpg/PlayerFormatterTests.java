@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 
-import java.util.ArrayList;
 
 public class PlayerFormatterTests {
 

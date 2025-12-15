@@ -1,8 +1,6 @@
 package re.forestier.edu.rpg;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import re.forestier.edu.rpg.AvatarClasses.Adventurer;
 import re.forestier.edu.rpg.interfaces.IExperienceManager;
 
-import java.util.ArrayList;
 import java.lang.reflect.Field;
 
 public class ExperienceManagerTests {
