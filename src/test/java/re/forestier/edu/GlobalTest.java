@@ -69,4 +69,13 @@ public class GlobalTest {
         String result = p.toString();
         assertThat(result, containsString("Combat Edge"));
     }
+
+    @Test
+    @DisplayName("Test TDD pour toMarkdown()")
+    void testToMarkdown() {
+        Adventurer player = new Adventurer("Florian", "Gnognak le Barbare", 200, 0, new ArrayList<>());
+        player.addXp(20);
+        player.clearInventory();
+        verify(player.toMarkdown());
+    }
 }
