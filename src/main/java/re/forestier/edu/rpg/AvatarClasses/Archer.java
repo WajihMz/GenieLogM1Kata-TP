@@ -7,6 +7,8 @@ import re.forestier.edu.rpg.STATS;
 import java.util.ArrayList;
 
 public class Archer extends AbstractPlayer {
+    private static final int ARCHER_BONUS_DIVISOR = 8;
+    private static final int ARCHER_BONUS_SUBTRACT = 1;
 
     public Archer(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
@@ -28,7 +30,7 @@ public class Archer extends AbstractPlayer {
         if (!inventory.contains(ITEM.MAGIC_BOW.getName())) {
             return;
         }
-        int bonusHP = getCurrentHP() / 8 - 1;
+        int bonusHP = getCurrentHP() / ARCHER_BONUS_DIVISOR - ARCHER_BONUS_SUBTRACT;
         if (bonusHP > 0) {
             addCurrentHealthPoints(bonusHP);
         }

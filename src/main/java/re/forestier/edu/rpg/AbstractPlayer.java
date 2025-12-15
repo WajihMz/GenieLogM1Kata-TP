@@ -9,6 +9,7 @@ import java.util.HashMap;
  */
 public abstract class AbstractPlayer {
     private static final int[] XP_THRESHOLDS = {10, 27, 57, 111};
+    private static final double HEALTH_REGEN_THRESHOLD = 0.5;
     
     private String playerName;
     private String avatarName;
@@ -40,7 +41,7 @@ public abstract class AbstractPlayer {
             return;
         }
 
-        if (currentHP < maximumHealth / 2) {
+        if (currentHP < maximumHealth * HEALTH_REGEN_THRESHOLD) {
             applyHealthRegeneration();
         }
         

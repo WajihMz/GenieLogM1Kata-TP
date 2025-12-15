@@ -6,6 +6,7 @@ import re.forestier.edu.rpg.STATS;
 import java.util.ArrayList;
 
 public class Goblin extends AbstractPlayer {
+    private static final double SURVIVAL_THRESHOLD = 0.25;
 
     public Goblin(String playerName, String avatarName, int maximumHealth, int money, ArrayList<String> inventory) {
         super(playerName, avatarName, maximumHealth, money, inventory);
@@ -23,7 +24,7 @@ public class Goblin extends AbstractPlayer {
 
     @Override
     protected void applyHealthRegeneration() {
-        boolean bonusSurvie = getCurrentHP() < getMaximumHealth() / 4;
+        boolean bonusSurvie = getCurrentHP() < getMaximumHealth() * SURVIVAL_THRESHOLD;
         
         addCurrentHealthPoints(1);
         
